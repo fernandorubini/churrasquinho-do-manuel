@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "937322934593",
+    "project_id": "grupo-churrasquinho-do-manuel",
+    "storage_bucket": "grupo-churrasquinho-do-manuel.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937322934593:android:20c4db71e4995b137e31c0",
+        "android_client_info": {
+          "package_name": "com.example.grupochurrasquinhodomanuel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB9Fg7YZaGx_Rt3r64LSQop6T_BXmud2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
