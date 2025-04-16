@@ -31,17 +31,17 @@ Aplicativo Android desenvolvido para uma rede de restaurantes com múltiplas uni
 
 ## 🛠️ Tecnologias Utilizadas
 
-| Categoria        | Tecnologias                                                                 |
-|------------------|------------------------------------------------------------------------------|
-| **Linguagens**   | Kotlin, Java                                                                |
-| **Arquitetura**  | MVVM, Clean Architecture, SOLID                                             |
-| **UI**           | Jetpack Compose                                                             |
-| **Persistência** | Room (SQLite)                                                               |
-| **API**          | Retrofit (REST)                                                             |
-| **Firebase**     | Auth, Firestore, FCM (Push), Analytics                                      |
-| **Injeção de Dependência** | Koin                                                             |
-| **CI/CD**        | GitHub Actions                                                              |
-| **Outros**       | Google Analytics 4, Dynatrace, Git, GitHub                                  |
+| Categoria               | Tecnologias                                                                 |
+|------------------------|------------------------------------------------------------------------------|
+| **Linguagens**          | Kotlin, Java                                                                |
+| **Arquitetura**         | MVVM, Clean Architecture, SOLID                                             |
+| **UI**                  | Jetpack Compose                                                             |
+| **Persistência**        | Room (SQLite)                                                               |
+| **API**                 | Retrofit (REST)                                                             |
+| **Firebase**            | Auth, Firestore, FCM (Push), Analytics                                      |
+| **Injeção de Dependência** | Koin                                                                  |
+| **CI/CD**               | GitHub Actions                                                              |
+| **Outros**              | Google Analytics 4, Dynatrace, Git, GitHub                                  |
 
 ---
 
@@ -62,3 +62,25 @@ git clone https://github.com/fernandorubini/churrasquinho-do-manuel.git
 # Abra o projeto no Android Studio
 # Aguarde o Gradle Sync e rode o app em um emulador ou dispositivo físico
 
+```
+---
+
+## 📸 Capturas de Tela
+
+### 👤 Módulo Cliente
+
+#### 🟦 Tela de Login
+<img src="docs/screenshots/login_cliente.jpg" width="300"/>
+
+#### 🟩 Tela de Cadastro
+<img src="docs/screenshots/cadastro_cliente.jpg" width="300"/>
+
+#### 🟨 Tela Inicial
+<img src="docs/screenshots/inicial_cliente.jpg" width="300"/>
+
+---
+
+### 👨‍🍳 Módulo Colaborador
+
+#### 🟧 Tela Inicial
+<img src="docs/screenshots/inicial_colaborador.jpg" width="300"/>
