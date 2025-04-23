@@ -1,86 +1,106 @@
-# Churrasquinho do Manuel 🍢  
-![status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+Estrutura do Projeto - Grupo Churrasquinho do Manuel 🌟
 
-Aplicativo Android desenvolvido para uma rede de restaurantes com múltiplas unidades e marcas. O app possui três módulos principais: Cliente (B2C), Colaboradores Internos e Gestão Administrativa. Cada módulo foi pensado para otimizar a operação, melhorar a experiência do usuário e permitir escalabilidade na gestão.
+Este documento descreve a estrutura atualizada do projeto, organizada por responsabilidades e features, seguindo boas práticas de modularização em projetos Android com Jetpack Compose e arquitetura limpa.
 
----
+🗂️ Pacotes e suas responsabilidades
 
-## 🧩 Funcionalidades por Módulo
+core/model
 
-### 👤 Módulo Cliente (B2C)
-- Pedido de delivery ou retirada
-- Rastreamento em tempo real
-- Integração com gateways de pagamento (cartão, carteira digital)
-- Cardápio dinâmico por loja/marca
-- Sistema de fidelidade (cashback, cupons, push notifications)
+Modelos compartilhados entre módulos e features:
 
-### 👨‍🍳 Módulo Interno (Colaboradores)
-- Escala de turnos com troca de horários
-- Checklists de rotina (abertura, limpeza, estoque)
-- Treinamentos com vídeos e quizzes
-- Integração com cozinha/backoffice
-- Chat interno (atendimento + cozinha)
+Brand.kt
 
-### 📊 Módulo de Gestão (Administrativo)
-- Dashboard com KPIs em tempo real
-- Controle de estoque por unidade
-- Auditorias e vistorias com fotos e comentários
-- Login multiempresa e controle centralizado
+MenuItem.kt
 
----
+CartItem.kt
 
-## 🛠️ Tecnologias Utilizadas
+data
 
-| Categoria               | Tecnologias                                                                 |
-|------------------------|------------------------------------------------------------------------------|
-| **Linguagens**          | Kotlin, Java                                                                |
-| **Arquitetura**         | MVVM, Clean Architecture, SOLID                                             |
-| **UI**                  | Jetpack Compose                                                             |
-| **Persistência**        | Room (SQLite)                                                               |
-| **API**                 | Retrofit (REST)                                                             |
-| **Firebase**            | Auth, Firestore, FCM (Push), Analytics                                      |
-| **Injeção de Dependência** | Koin                                                                  |
-| **CI/CD**               | GitHub Actions                                                              |
-| **Outros**              | Google Analytics 4, Dynatrace, Git, GitHub                                  |
+Implementações de acesso a dados (Room):
 
----
+DAOs: BrandDao.kt, UnitDao.kt, ReviewDao.kt
 
-## 🚧 Status do Projeto
+Entidades: UnitEntity.kt
 
-Este projeto está **em desenvolvimento ativo**.  
-Algumas funcionalidades já foram implementadas e outras estão em progresso.  
-O código está sendo modularizado para facilitar manutenções e atualizações futuras.
+Repositórios: BrandRepository.kt, UnitRepository.kt, ReviewRepository.kt
 
----
+AppDatabase.kt
 
-## 🏁 Como executar
+Mocks (opcional): mock/MockUnitList.kt
 
-```bash
-# Clone o repositório
-git clone https://github.com/fernandorubini/churrasquinho-do-manuel.git
+di
 
-# Abra o projeto no Android Studio
-# Aguarde o Gradle Sync e rode o app em um emulador ou dispositivo físico
+Módulo de injeção de dependência (Koin):
 
-```
----
+AppModule.kt
 
-## 📸 Capturas de Tela
+features
 
-### 👤 Módulo Cliente
+Separadas por responsabilidades (ex: customer, employees, management, etc.) e cada uma com suas camadas:
 
-#### 🟦 Tela de Login
-<img src="docs/screenshots/login_cliente.jpg" width="300"/>
+features/customer
 
-#### 🟩 Tela de Cadastro
-<img src="docs/screenshots/cadastro_cliente.jpg" width="300"/>
+model/Customer.kt
 
-#### 🟨 Tela Inicial
-<img src="docs/screenshots/inicial_cliente.jpg" width="300"/>
+ui/cart/CartScreen.kt, CartViewModel.kt
 
----
+ui/menu/MenuScreen.kt
 
-### 👨‍🍳 Módulo Colaborador
+ui/order/OrderConfirmationScreen.kt
 
-#### 🟧 Tela Inicial
-<img src="docs/screenshots/inicial_colaborador.jpg" width="300"/>
+ui/store/HomeScreen.kt, StoreScreen.kt, StoreViewModel.kt
+
+presentation/CustomerViewModel.kt
+
+features/employees
+
+model/Employee.kt
+
+ui/home/EmployeeHomeScreen.kt
+
+features/management
+
+model/Management.kt
+
+ui/ManagementHomeScreen.kt, ManagementContentScreen.kt, MetricsSection.kt
+
+features/register
+
+ui/CustomerRegisterScreen.kt, EmployeeRegisterScreen.kt, RegisterScreen.kt
+
+features/login
+
+model/LoginState.kt
+
+presentation/LoginViewModel.kt
+
+ui/LoginScreen.kt
+
+model/
+
+Modelos não exclusivos de nenhuma feature:
+
+Order.kt, OrderTracking.kt, Product.kt, Review.kt
+
+navigation/
+
+Centraliza a navegação da aplicação:
+
+AppNavigation.kt, MainNavigation.kt
+
+💡 Padrões Adotados
+
+Camadas separadas por responsabilidade: model, ui, presentation.
+
+Reutilização de ViewModels com DI via Koin.
+
+Composables centralizados em ui/ por feature.
+
+Dados globais compartilhados no pacote core/.
+
+Navegação declarativa com NavHost e rotas nomeadas.
+
+Este README serve como guia de arquitetura e referência para novos colaboradores e manutenção futura do projeto.
+
+Se houver necessidade de ajustes ou novas features, seguir a mesma estrutura modularizada.
+
