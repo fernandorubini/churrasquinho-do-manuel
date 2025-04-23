@@ -58,6 +58,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.6.0")
     implementation("androidx.compose.material3:material3:1.2.0") // Verifique se a versão é a mais recente
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.0")
+    implementation(libs.androidx.room.common.jvm)
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.0")
     implementation("androidx.compose.material:material-icons-extended:1.6.0")
 

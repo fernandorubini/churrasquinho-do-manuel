@@ -1,0 +1,87 @@
+package com.example.grupochurrasquinhodomanuel.navigation
+
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.grupochurrasquinhodomanuel.features.brand.presentation.BrandScreen
+import com.example.grupochurrasquinhodomanuel.features.unit.presentation.UnitScreen
+
+sealed class Screen(val route: String, val title: String) {
+    object Brand : Screen("brand", "Brands")
+    object Unit : Screen("unit", "Units")
+}
+
+@Composable
+fun AppNavigation(modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
+    val screens = listOf(Screen.Brand, Screen.Unit)
+
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController = navController, items = screens)
+        }
+    ) { innerPadding ->
+        NavigationGraph(
+            navController = navController,
+            modifier = modifier.then(Modifier.padding(innerPadding))
+        )
+    }
+}
+
+@Composable
+fun NavigationGraph(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Brand.route,
+        modifier = modifier
+    ) {
+        composable(Screen.Brand.route) {
+            BrandScreen()
+        }
+        composable(Screen.Unit.route) {
+            UnitScreen()
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(
+    navController: NavHostController,
+    items: List<Screen>
+) {
+    NavigationBar {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+
+        items.forEach { screen ->
+            NavigationBarItem(
+                label = { Text(screen.title) },
+                selected = currentRoute == screen.route,
+                onClick = {
+                    if (currentRoute != screen.route) {
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                },
+                icon = { Icon(Icons.Default.List, contentDescription = screen.title) }
+            )
+        }
+    }
+}
