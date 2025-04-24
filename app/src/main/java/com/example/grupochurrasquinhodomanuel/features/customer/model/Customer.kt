@@ -1,9 +1,12 @@
 package com.example.grupochurrasquinhodomanuel.features.customer.model
 
-import androidx.compose.runtime.Composable
-import androidx.compose.material3.Text
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Composable
-fun ClienteHomeScreen() {
-    Text(text = "Tela Inicial do Cliente")
-}
+@Entity(tableName = "customers")
+data class `Customer.kt`(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
+    val name: String,
+    val email: String,
+    val phone: String
+)
