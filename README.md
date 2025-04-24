@@ -1,106 +1,104 @@
-Estrutura do Projeto - Grupo Churrasquinho do Manuel 🌟
+# 🧭 Estrutura do Projeto - Grupo Churrasquinho do Manuel 🍢
 
-Este documento descreve a estrutura atualizada do projeto, organizada por responsabilidades e features, seguindo boas práticas de modularização em projetos Android com Jetpack Compose e arquitetura limpa.
+Este **documento** define a **estrutura de pacotes organizada** por **responsabilidades** e features.
 
-🗂️ Pacotes e suas responsabilidades
+## 🗂️ Estrutura Atual
 
-core/model
+```text
+core/
+  model/
+    Brand.kt
+    CustomerMenuItem.kt
+    MenuItem.kt
+    Unit.kt
+    User.kt
 
-Modelos compartilhados entre módulos e features:
+data/
+  AppDatabase.kt
+  BrandDao.kt
+  BrandRepository.kt
+  ReviewDao.kt
+  ReviewRepository.kt
+  UnitDao.kt
+  UnitRepository.kt
+  CustomerDao.kt
+  CustomerRepository.kt
 
-Brand.kt
+di/
+  AppModule.kt
 
-MenuItem.kt
+features/
+  brand/
+    presentation/
+      BrandScreen.kt
+      BrandViewModel.kt
+      UnitScreen.kt
+      UnitViewModel.kt
 
-CartItem.kt
+  customer/
+    model/
+      CartItem.kt
+      Customer.kt
+    presentation/
+      CustomerViewModel.kt
+    ui/
+      cart/
+        CartScreen.kt
+      menu/
+        MenuScreen.kt
+        MenuItem.kt
+      order/
+        OrderConfirmationScreen.kt
+      store/
+        CustomerStoreScreen.kt
+        CustomerHomeScreen.kt
 
-data
+  employees/
+    Employee.kt
+    ui/
+      EmployeeHomeScreen.kt
 
-Implementações de acesso a dados (Room):
+  login/
+    LoginScreen.kt
+    LoginState.kt
+    LoginViewModel.kt
 
-DAOs: BrandDao.kt, UnitDao.kt, ReviewDao.kt
+  management/
+    ManagementHomeScreen.kt
+    presentation/
+      ManagementHomeScreenContent.kt
+      EmployeeHomeScreen.kt
+      ManagementScreen.kt
+      Presentation.kt
 
-Entidades: UnitEntity.kt
-
-Repositórios: BrandRepository.kt, UnitRepository.kt, ReviewRepository.kt
-
-AppDatabase.kt
-
-Mocks (opcional): mock/MockUnitList.kt
-
-di
-
-Módulo de injeção de dependência (Koin):
-
-AppModule.kt
-
-features
-
-Separadas por responsabilidades (ex: customer, employees, management, etc.) e cada uma com suas camadas:
-
-features/customer
-
-model/Customer.kt
-
-ui/cart/CartScreen.kt, CartViewModel.kt
-
-ui/menu/MenuScreen.kt
-
-ui/order/OrderConfirmationScreen.kt
-
-ui/store/HomeScreen.kt, StoreScreen.kt, StoreViewModel.kt
-
-presentation/CustomerViewModel.kt
-
-features/employees
-
-model/Employee.kt
-
-ui/home/EmployeeHomeScreen.kt
-
-features/management
-
-model/Management.kt
-
-ui/ManagementHomeScreen.kt, ManagementContentScreen.kt, MetricsSection.kt
-
-features/register
-
-ui/CustomerRegisterScreen.kt, EmployeeRegisterScreen.kt, RegisterScreen.kt
-
-features/login
-
-model/LoginState.kt
-
-presentation/LoginViewModel.kt
-
-ui/LoginScreen.kt
+  register/
+    CustomerRegisterScreen.kt
+    EmployeeRegisterScreen.kt
+    RegisterScreen.kt
 
 model/
-
-Modelos não exclusivos de nenhuma feature:
-
-Order.kt, OrderTracking.kt, Product.kt, Review.kt
+  Order.kt
+  OrderTracking.kt
+  Product.kt
+  Review.kt
 
 navigation/
+  AppNavigation.kt
+  MainNavigation.kt
 
-Centraliza a navegação da aplicação:
+ui/
+  theme/
+    Color.kt
+    Theme.kt
+    Type.kt
+```
 
-AppNavigation.kt, MainNavigation.kt
+## ✅ Padrões Adotados
 
-💡 Padrões Adotados
-
-Camadas separadas por responsabilidade: model, ui, presentation.
-
-Reutilização de ViewModels com DI via Koin.
-
-Composables centralizados em ui/ por feature.
-
-Dados globais compartilhados no pacote core/.
-
-Navegação declarativa com NavHost e rotas nomeadas.
+- **Camadas separadas por responsabilidade:** `model`, `ui`, `presentation`.
+- **ViewModels injetados com Koin.**
+- **Composables organizados por recurso dentro de `ui/` em cada feature.**
+- **Modelos compartilhados globais no pacote `core/`.**
+- **Navegação declarativa com `NavHost` e rotas nomeadas.**
 
 Este README serve como guia de arquitetura e referência para novos colaboradores e manutenção futura do projeto.
-
-Se houver necessidade de ajustes ou novas features, seguir a mesma estrutura modularizada.
-
