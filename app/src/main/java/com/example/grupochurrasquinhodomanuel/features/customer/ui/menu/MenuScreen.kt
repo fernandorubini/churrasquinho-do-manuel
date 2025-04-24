@@ -1,4 +1,4 @@
-import com.example.grupochurrasquinhodomanuel.features.customer.ui.menu.MenuScreen
+import com.example.grupochurrasquinhodomanuel.core.model.MenuItem
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
-import com.example.grupochurrasquinhodomanuel.core.model.MenuItem
 import com.example.grupochurrasquinhodomanuel.core.model.CartItem
 import com.example.grupochurrasquinhodomanuel.features.customer.ui.cart.CartViewModel
 
@@ -50,24 +49,24 @@ fun MenuScreen(navController: NavController, viewModel: CartViewModel = koinView
                         .padding(16.dp)
                 ) {
                     Image(
-                        painter = rememberImagePainter(item.imagemUrl),
-                        contentDescription = item.nome,
+                        painter = rememberImagePainter(item.imageUrl),
+                        contentDescription = item.name,
                         modifier = Modifier.size(80.dp)
                     )
 
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        Text(item.nome, style = MaterialTheme.typography.titleMedium)
+                        Text(item.name, style = MaterialTheme.typography.titleMedium)
                         Text(
-                            text = item.descricao,
+                            text = item.description,
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color.Gray,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "R$ ${item.preco}",
+                            text = "R$ ${item.price}",
                             style = MaterialTheme.typography.bodyLarge
                         )
 
@@ -78,9 +77,9 @@ fun MenuScreen(navController: NavController, viewModel: CartViewModel = koinView
                                 viewModel.addItem(
                                     CartItem(
                                         id = item.id,
-                                        name = item.nome,
-                                        price = item.preco,
-                                        imageUrl = item.imagemUrl,
+                                        name = item.name,
+                                        price = item.price,
+                                        imageUrl = item.imageUrl,
                                         quantity = 1
                                     )
                                 )

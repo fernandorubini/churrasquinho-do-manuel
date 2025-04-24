@@ -19,6 +19,6 @@ fun EmployeeHomeScreen() {
             style = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text("Welcome! Here you can manage your daily tasks, view orders, and assist customers.")
+        Text("Bem-vindo! Aqui você pode gerenciar suas tarefas diárias, visualizar pedidos e atender clientes.")
     }
 }

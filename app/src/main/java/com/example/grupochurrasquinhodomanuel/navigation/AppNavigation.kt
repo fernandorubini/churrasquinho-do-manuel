@@ -1,5 +1,6 @@
 package com.example.grupochurrasquinhodomanuel.navigation
 
+import MenuScreen
 import RegisterScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -13,11 +14,11 @@ import com.example.grupochurrasquinhodomanuel.features.management.ui.ManagementH
 import com.example.grupochurrasquinhodomanuel.features.unit.presentation.UnitScreen
 import com.example.grupochurrasquinhodomanuel.features.customer.ui.cart.CartScreen
 import com.example.grupochurrasquinhodomanuel.features.customer.ui.order.OrderConfirmationScreen
-import com.example.grupochurrasquinhodomanuel.features.customer.ui.menu.MenuScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "Routes.Register") {
+    NavHost(navController = navController, startDestination = "register")
+    {
         composable("register") {
             RegisterScreen(navController)
         }

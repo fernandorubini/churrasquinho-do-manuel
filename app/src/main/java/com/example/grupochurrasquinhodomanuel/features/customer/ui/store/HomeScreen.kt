@@ -18,7 +18,7 @@ fun CustomerHomeScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Welcome to the Customer Area",
+            text = "Bem-vindo à Área do Cliente",
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -29,7 +29,7 @@ fun CustomerHomeScreen(navController: NavController) {
                 navController.navigate("productDetails")
             }
         ) {
-            Text("Go to Product Details")
+            Text("Ir para Detalhes do Produto")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -39,7 +39,7 @@ fun CustomerHomeScreen(navController: NavController) {
                 navController.navigate("orderHistory")
             }
         ) {
-            Text("View Order History")
+            Text("Ver Histórico de Pedidos")
         }
     }
 }

@@ -1,15 +1,17 @@
 pluginManagement {
     repositories {
-        google()  // Adiciona o repositório do Google
+        google()
         mavenCentral()
+        gradlePluginPortal() // Opcional, mas útil para plugins externos
     }
 }
 
 dependencyResolutionManagement {
     repositories {
-        google()  // Adiciona o repositório do Google
+        google()
         mavenCentral()
     }
 }
 
+rootProject.name = "GrupoChurrasquinhoDoManuel"
 include(":app")

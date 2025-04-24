@@ -1,6 +1,6 @@
 package com.example.grupochurrasquinhodomanuel
 
-import AppNavigation
+import com.example.grupochurrasquinhodomanuel.navigation.AppNavigation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

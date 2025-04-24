@@ -1,3 +1,4 @@
+
 # 🧭 *Estrutura do Projeto* - *Grupo Churrasquinho do Manuel* 🍢
 
 Este **documento** define a **estrutura de pacotes organizada** por **responsabilidades** e features.
@@ -8,18 +9,21 @@ Este **documento** define a **estrutura de pacotes organizada** por **responsabi
 core/
   model/
     Brand.kt
-    CustomerMenuItem.kt
+    CartItem.kt
     MenuItem.kt
-    Unit.kt
-    User.kt
 
 data/
+  mock/
+    MockUnitList.kt
   AppDatabase.kt
   BrandDao.kt
   BrandRepository.kt
+  CustomerDao.kt
+  CustomerRepository.kt
   ReviewDao.kt
   ReviewRepository.kt
   UnitDao.kt
+  UnitEntity.kt
   UnitRepository.kt
 
 di/
@@ -30,50 +34,55 @@ features/
     presentation/
       BrandScreen.kt
       BrandViewModel.kt
-      CustomerViewModel.kt
       UnitScreen.kt
       UnitViewModel.kt
 
   customer/
     model/
-      CartItem.kt
       Customer.kt
     presentation/
-      CartViewModel.kt
+      CustomerViewModel.kt
     ui/
       cart/
         CartScreen.kt
+        CartViewModel.kt
       menu/
         MenuScreen.kt
-        MenuItem.kt
       order/
         OrderConfirmationScreen.kt
       store/
-        CustomerStoreScreen.kt
-        CustomerHomeScreen.kt
+        HomeScreen.kt
+        StoreScreen.kt
+        StoreViewModel.kt
 
   employees/
-    Employee.kt
+    model/
+      Employee.kt
     ui/
-      EmployeeHomeScreen.kt
+      home/
+        EmployeeHomeScreen.kt
 
   login/
-    LoginScreen.kt
-    LoginState.kt
-    LoginViewModel.kt
+    model/
+      LoginState.kt
+    presentation/
+      LoginViewModel.kt
+    ui/
+      LoginScreen.kt
 
   management/
-    ManagementHomeScreen.kt
-    presentation/
-      ManagementHomeScreenContent.kt
-      EmployeeHomeScreen.kt
-      ManagementScreen.kt
-      Presentation.kt
+    model/
+      Management.kt
+    ui/
+      ManagementContentScreen.kt
+      ManagementHomeScreen.kt
+      MetricsSection.kt
 
   register/
-    CustomerRegisterScreen.kt
-    EmployeeRegisterScreen.kt
-    RegisterScreen.kt
+    ui/
+      CustomerRegisterScreen.kt
+      EmployeeRegisterScreen.kt
+      RegisterScreen.kt
 
 model/
   Order.kt
@@ -90,11 +99,27 @@ ui/
     Color.kt
     Theme.kt
     Type.kt
+
+MainActivity.kt
+MyApplication.kt
+UserType.kt
+
 ```
 
-## ✅ Padrões
+✅ Padrões de Organização
 
-- **Arquivos de dados e modelo compartilhado:** ficam em `core/` e `model/`.
-- **Telas e Lógica por feature:** dentro de `features/<nomeDaFeature>`.
-- **Separação por camadas dentro da feature:** `ui`, `presentation`, `model`.
-- **Navegação central:** arquivos em `navigation/`.
+core/: Modelos reutilizáveis compartilhados entre módulos.
+
+data/: Fontes de dados, incluindo DAOs, Repositórios e Banco de Dados.
+
+di/: Injeção de dependência via Koin.
+
+features/: Cada funcionalidade separada por pastas (brand, customer, login etc), organizadas por camadas model, presentation e ui.
+
+model/: Modelos globais de domínio do app.
+
+navigation/: Gerenciamento de navegação central do app.
+
+ui/theme/: Temas e estilos visuais compartilhados.
+
+MainActivity.kt****, MyApplication.kt, ****UserType.kt: Entrypoints e configurações principais do aplicativo.

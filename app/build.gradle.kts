@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt) // importante pro Room!
-    alias(libs.plugins.kotlin.compose) // necessário pro Compose no Kotlin 2.0+
+    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
 }
 
@@ -37,7 +37,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11" // versão do Kotlin Compiler Extension (verifique se compatível)
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
 
     packaging {
@@ -56,16 +56,19 @@ dependencies {
     // Compose
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui:1.6.0")
-    implementation("androidx.compose.material3:material3:1.2.0") // Verifique se a versão é a mais recente
+    implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.0")
-    implementation(libs.androidx.room.common.jvm)
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.0")
     implementation("androidx.compose.material:material-icons-extended:1.6.0")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.0")
 
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
+    // Corrige erro de metadados Kotlin com Room
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.7.0")
 
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -92,5 +95,5 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.0") // Verifique se está correto
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.0")
 }
