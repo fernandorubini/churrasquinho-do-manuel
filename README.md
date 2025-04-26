@@ -1,7 +1,7 @@
 # 🧭 Estrutura do Projeto - Grupo Churrasquinho do Manuel 🍢
 
 ![Status](https://img.shields.io/badge/status-Em%20Desenvolvimento-yellow)
-![Java](https://img.shields.io/badge/language-Java17-blue)
+![Kotlin](https://img.shields.io/badge/language-Kotlin-blue)
 ![Atualizado](https://img.shields.io/badge/Atualizado-2025-brightgreen)
 
 Este **documento** define a **estrutura de pacotes organizada** por **responsabilidades** e features.
