@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- TextView para exibir o nome do cliente -->
+    <TextView
+        android:id="@+id/customerNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nome do cliente"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Botão para simular a inserção de um novo cliente -->
+    <Button
+        android:id="@+id/addCustomerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicionar Cliente"
+        android:onClick="onAddCustomerClick"/>
+
+</LinearLayout>

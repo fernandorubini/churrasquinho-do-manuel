@@ -9,11 +9,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.grupochurrasquinhodomanuel.core.util.toCurrencyString
 import org.koin.androidx.compose.koinViewModel
 
-
 @Composable
-fun CartScreen(navController: NavController, viewModel: CartViewModel = koinViewModel()) {
+fun CartScreen(
+    navController: NavController,
+    viewModel: CartViewModel = koinViewModel()
+) {
     val cartItems = viewModel.cartItems.collectAsState().value
     val total = viewModel.totalPrice()
 
@@ -42,9 +45,20 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(text = item.name, style = MaterialTheme.typography.titleMedium)
-                            Text(text = "Quantidade: ${item.quantity}", style = MaterialTheme.typography.bodyMedium)
-                            Text(text = "Preço unitário: R$ ${item.price}", style = MaterialTheme.typography.bodyMedium)
-                            Text(text = "Subtotal: R$ ${"%.2f".format(item.price * item.quantity)}", style = MaterialTheme.typography.bodyLarge)
+                            Text(
+                                text = "Quantidade: ${item.quantity}",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "Preço unitário: ${item.price.toCurrencyString()}",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "Subtotal: ${
+                                    item.price.multiply(item.quantity.toBigDecimal()).toCurrencyString()
+                                }",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
 
                             Spacer(modifier = Modifier.height(8.dp))
 
@@ -63,7 +77,7 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Total: R$ ${"%.2f".format(total)}",
+                text = "Total: ${total.toCurrencyString()}",
                 style = MaterialTheme.typography.titleLarge
             )
 

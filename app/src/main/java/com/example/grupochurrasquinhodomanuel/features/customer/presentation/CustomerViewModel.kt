@@ -2,19 +2,51 @@ package com.example.grupochurrasquinhodomanuel.features.customer.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.grupochurrasquinhodomanuel.data.CustomerRepository
+import com.example.grupochurrasquinhodomanuel.core.preferences.SessionPreferences
+import com.example.grupochurrasquinhodomanuel.model.Customer
+import com.example.grupochurrasquinhodomanuel.data.repository.CustomerRepository
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class CustomerViewModel(private val repository: CustomerRepository) : ViewModel() {
-    init {
+class CustomerViewModel(
+    private val repository: CustomerRepository,
+    private val session: SessionPreferences
+) : ViewModel() {
+
+    // Fluxo de dados para obter o cliente logado
+    val customer: StateFlow<Customer?> = session.loggedInEmail
+        .flatMapLatest { email ->
+            if (email != null) repository.getCustomerByEmail(email) else flowOf(null)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
+
+    // Função para inserir um cliente no banco de dados
+    fun insertCustomer(customer: Customer) {
         viewModelScope.launch {
-            repository.getAllCustomers().collect {
-                // lógica para lidar com os dados
-            }
+            repository.insertCustomer(customer)
         }
     }
 
-    fun doSomething() {
-        // lógica da tela de customer
+    // Função para atualizar um cliente no banco de dados
+    fun updateCustomer(customer: Customer) {
+        viewModelScope.launch {
+            repository.updateCustomer(customer)
+        }
+    }
+
+    // Função para deletar um cliente do banco de dados
+    fun deleteCustomer(customer: Customer) {
+        viewModelScope.launch {
+            repository.deleteCustomer(customer)
+        }
+    }
+
+    // Função para obter o cliente logado através do email
+    fun getCustomerByEmail(email: String): Flow<Customer?> {
+        return repository.getCustomerByEmail(email)
     }
 }

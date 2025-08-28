@@ -1,127 +1,226 @@
 package com.example.grupochurrasquinhodomanuel.features.register.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
+import com.example.grupochurrasquinhodomanuel.core.constants.Strings
+import com.example.grupochurrasquinhodomanuel.core.util.getPasswordStrength
+import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmployeeRegisterScreen(navController: NavController) {
+fun EmployeeRegisterScreen(
+    navController: NavController,
+    viewModel: EmployeeRegisterViewModel = koinViewModel()
+) {
+    val context = LocalContext.current
+
+    var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var role by remember { mutableStateOf("") }
+    var department by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
-    var isLoading by remember { mutableStateOf(false) }
+    var confirm by remember { mutableStateOf("") }
+    var tried by remember { mutableStateOf(false) }
 
-    // Função para verificar se o e-mail é corporativo e pertence a uma das lojas
-    fun isCorporateEmail(email: String): Boolean {
-        return email.endsWith("@churraquinhodomanuel.com.br") ||
-                email.endsWith("@sushikai.com.br") ||
-                email.endsWith("@aieoli.com.br") ||
-                email.endsWith("@buffalosred.com.br")
-    }
+    fun isEmailValid(e: String): Boolean =
+        android.util.Patterns.EMAIL_ADDRESS.matcher(e).matches()
 
-    // Função para registrar o novo funcionário no Firebase
-    fun handleRegister() {
-        if (!isCorporateEmail(email)) {
-            errorMessage = "Por favor, use um e-mail corporativo."
-        } else if (password == confirmPassword) {
-            isLoading = true
-            // Criando o usuário no Firebase Authentication
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Se o cadastro for bem-sucedido, navega para a tela de login
-                        navController.navigate("login")
-                    } else {
-                        // Se houver erro, exibe a mensagem de erro
-                        errorMessage = task.exception?.message ?: "Erro desconhecido"
-                    }
-                    isLoading = false
-                }
-        } else {
-            errorMessage = "As senhas não coincidem!"
-        }
-    }
+    val minName = 3
+    val minRole = 3
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp)
-                    .padding(paddingValues)
-            ) {
-                Text("Cadastro do Funcionário", style = MaterialTheme.typography.headlineMedium)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text(text = "E-mail Corporativo") },
-                    singleLine = true,
-                    isError = !isCorporateEmail(email), // Marcar campo de e-mail como erro se não for corporativo
-                    modifier = Modifier.fillMaxWidth()
+        topBar = {
+            TopAppBar(
+                title = { Text(Strings.Labels.REGISTER) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Senha") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    label = { Text("Confirmar Senha") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = { handleRegister() },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = !isLoading // Desabilitar o botão enquanto o cadastro está sendo processado
-                ) {
-                    if (isLoading) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
-                    } else {
-                        Text("Cadastrar")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Adiciona a opção de login para quem já tem uma conta
-                TextButton(
-                    onClick = { navController.navigate("login") },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Já sou Funcionário! Faça o Login")
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                if (errorMessage != null) {
-                    Text(text = errorMessage!!, color = MaterialTheme.colorScheme.error)
-                }
-            }
+            )
         }
-    )
+    ) { inner ->
+        Column(
+            modifier = Modifier
+                .padding(inner)
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Nome
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text(Strings.Labels.NAME) },
+                singleLine = true,
+                isError = tried && name.trim().length < minName,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (tried && name.trim().length < minName) {
+                Text(
+                    text = Strings.Messages.NAME_TOO_SHORT.format(minName),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            // E-mail
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text(Strings.Labels.EMAIL) },
+                singleLine = true,
+                isError = tried && !isEmailValid(email),
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (tried && !isEmailValid(email)) {
+                Text(
+                    text = Strings.Messages.INVALID_EMAIL,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            // Função (a UI coleta, mas não é enviada ao register atual)
+            OutlinedTextField(
+                value = role,
+                onValueChange = { role = it },
+                label = { Text("Função") },
+                singleLine = true,
+                isError = tried && role.trim().length < minRole,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (tried && role.trim().length < minRole) {
+                Text(
+                    text = Strings.Messages.ROLE_TOO_SHORT.format(minRole),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            // Departamento (a UI coleta, mas não é enviada ao register atual)
+            OutlinedTextField(
+                value = department,
+                onValueChange = { department = it },
+                label = { Text("Departamento") },
+                singleLine = true,
+                isError = tried && department.isBlank(),
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (tried && department.isBlank()) {
+                Text(
+                    text = Strings.Messages.DEPARTMENT_REQUIRED,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            // Senha
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text(Strings.Labels.PASSWORD) },
+                visualTransformation = PasswordVisualTransformation(),
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (password.isNotBlank()) {
+                val (progress, label, color) = getPasswordStrength(password)
+                LinearProgressIndicator(
+                    progress = { progress },
+                    color = color,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                )
+                Text(text = label, color = color, style = MaterialTheme.typography.bodySmall)
+            }
+
+            // Confirmar senha
+            OutlinedTextField(
+                value = confirm,
+                onValueChange = { confirm = it },
+                label = { Text(Strings.Labels.CONFIRM_PASSWORD) },
+                visualTransformation = PasswordVisualTransformation(),
+                singleLine = true,
+                isError = tried && password != confirm,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (tried && password != confirm) {
+                Text(
+                    text = Strings.Messages.PASSWORD_MISMATCH,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // Registrar
+            Button(
+                onClick = {
+                    tried = true
+                    val ok =
+                        name.trim().length >= minName &&
+                                isEmailValid(email) &&
+                                role.trim().length >= minRole &&
+                                department.isNotBlank() &&
+                                password.length >= 6 &&
+                                password == confirm
+
+                    if (!ok) return@Button
+
+                    // 🔧 Chame o método conforme a assinatura atual do seu ViewModel:
+                    // Se a assinatura é register(name, email, password, confirmPassword, onSuccess):
+                    viewModel.register(
+                        name = name.trim(),
+                        email = email.trim(),
+                        password = password,
+                        confirmPassword = confirm
+                    ) {
+                        Toast.makeText(
+                            context,
+                            Strings.Labels.SUCCESS_REGISTER,
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        // Dica: se quiser persistir role/department, crie outro método no ViewModel,
+                        // ex.: viewModel.updateProfile(role, department)
+                        navController.navigate(Strings.Routes.LOGIN) { popUpTo(0) }
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(Strings.Labels.REGISTER)
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            // Link: Já tem uma conta? Entrar
+            AlreadyHaveAccountFooter(
+                onClick = { navController.navigate(Strings.Routes.LOGIN) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun AlreadyHaveAccountFooter(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        TextButton(onClick = onClick) {
+            Text(Strings.Labels.ALREADY_HAVE_ACCOUNT)
+        }
+    }
 }

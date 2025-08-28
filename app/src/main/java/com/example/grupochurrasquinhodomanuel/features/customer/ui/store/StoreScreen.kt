@@ -9,58 +9,53 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun ClienteLojaScreen(navController: NavController) {
-    val lojas = listOf("Loja Aeroporto", "Loja Venda Nova", "Loja Big Shopping")
-    var selectedLoja by remember { mutableStateOf(lojas[0]) }
+fun StoreScreen(navController: NavController) {
+    val stores = listOf("Loja Aeroporto", "Loja Venda Nova", "Loja Big Shopping")
+    var selectedStore by remember { mutableStateOf(stores[0]) }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(32.dp)
-                    .padding(paddingValues)
-            ) {
-                Text(
-                    text = "Escolha a loja",
-                    style = MaterialTheme.typography.headlineMedium
-                )
+        modifier = Modifier.fillMaxSize()
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp)
+                .padding(paddingValues)
+        ) {
+            Text(
+                text = "Escolha a loja",
+                style = MaterialTheme.typography.headlineMedium
+            )
 
-                Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                // Lista de lojas com radio buttons
-                Column(
-                    modifier = Modifier.selectableGroup()
-                ) {
-                    lojas.forEach { loja ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp)
-                        ) {
-                            RadioButton(
-                                selected = selectedLoja == loja,
-                                onClick = { selectedLoja = loja }
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = loja, style = MaterialTheme.typography.bodyLarge)
-                        }
+            Column(modifier = Modifier.selectableGroup()) {
+                stores.forEach { store ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    ) {
+                        RadioButton(
+                            selected = selectedStore == store,
+                            onClick = { selectedStore = store }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = store, style = MaterialTheme.typography.bodyLarge)
                     }
                 }
+            }
 
-                Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                Button(
-                    onClick = {
-                        // Redireciona para a tela do pedido com a loja escolhida
-                        navController.navigate("pedido/${selectedLoja}")
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Escolher Loja")
-                }
+            Button(
+                onClick = {
+                    navController.navigate("pedido/${selectedStore}")
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Escolher Loja")
             }
         }
-    )
+    }
 }

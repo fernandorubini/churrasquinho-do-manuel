@@ -1,4 +1,4 @@
-package com.example.grupochurrasquinhodomanuel.features.customer.presentation
+package com.example.grupochurrasquinhodomanuel.features.customer.ui.store
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun CustomerHomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -25,9 +25,8 @@ fun CustomerHomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = {
-                navController.navigate("productDetails")
-            }
+            onClick = { navController.navigate("productDetails") },
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ir para Detalhes do Produto")
         }
@@ -35,9 +34,8 @@ fun CustomerHomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = {
-                navController.navigate("orderHistory")
-            }
+            onClick = { navController.navigate("orderHistory") },
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ver Histórico de Pedidos")
         }

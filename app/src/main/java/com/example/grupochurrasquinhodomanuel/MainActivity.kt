@@ -1,19 +1,20 @@
-package com.example.grupochurrasquinhodomanuel
+package com.example.grupochurrasquinhodomanuel.ui
 
-import com.example.grupochurrasquinhodomanuel.navigation.AppNavigation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
-import com.example.grupochurrasquinhodomanuel.ui.theme.GrupoChurrasquinhoDoManuelTheme
+import com.example.grupochurrasquinhodomanuel.navigation.AppNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GrupoChurrasquinhoDoManuelTheme {
+            Surface(color = MaterialTheme.colorScheme.background) {
                 val navController = rememberNavController()
-                AppNavigation(navController) // Passa o navController para a navegação
+                AppNavHost(navController = navController) // ← SEM navegação direta aqui
             }
         }
     }

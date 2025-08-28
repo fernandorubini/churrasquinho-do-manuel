@@ -1,5 +1,6 @@
 package com.example.grupochurrasquinhodomanuel.features.login.ui
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -7,137 +8,133 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.grupochurrasquinhodomanuel.UserType
-import com.example.grupochurrasquinhodomanuel.features.login.model.LoginState
-import com.example.grupochurrasquinhodomanuel.features.login.presentation.LoginViewModel
+import com.example.grupochurrasquinhodomanuel.core.UserType
+import com.example.grupochurrasquinhodomanuel.core.constants.Strings
+import com.example.grupochurrasquinhodomanuel.core.preferences.AuthPreferences
+import com.example.grupochurrasquinhodomanuel.features.login.viewmodel.AuthState
+import com.example.grupochurrasquinhodomanuel.features.login.viewmodel.AuthViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = koinViewModel()
+    viewModel: AuthViewModel = koinViewModel(),
+    authPreferences: AuthPreferences = koinInject()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf<String?>(null) }  // Usando null para inicializar a mensagem de erro
-    var showDialog by remember { mutableStateOf(false) } // Controla a exibição do AlertDialog
+    var showDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
-    val loginState by viewModel.loginState.collectAsState()
+    val authState by viewModel.authState.collectAsState()
+    val scope = rememberCoroutineScope()
 
-    // Efeito para navegar quando o login for bem-sucedido
-    LaunchedEffect(loginState) {
-        when (loginState) {
-            is LoginState.Success -> {
-                val userType = (loginState as LoginState.Success).userType
-                when (userType) {
-                    UserType.CLIENTE -> navController.navigate("customerHome")
-                    UserType.COLABORADOR -> navController.navigate("employeeHome")
-                    UserType.GESTAO -> navController.navigate("managementHome")
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthState.Success -> {
+                val userType = (authState as AuthState.Success).userType
+                scope.launch {
+                    authPreferences.saveUserEmail(email)
+                    authPreferences.saveUserType(userType)
                 }
+                val route = when (userType) {
+                    UserType.CUSTOMER -> Strings.Routes.CUSTOMER_HOME
+                    UserType.EMPLOYEE -> Strings.Routes.EMPLOYEE_HOME
+                    UserType.MANAGER  -> Strings.Routes.MANAGEMENT_HOME
+                }
+                navController.navigate(route) { popUpTo(0) }
             }
-
-            is LoginState.Error -> {
-                // Quando ocorrer um erro, mostra a mensagem de erro no AlertDialog
-                errorMessage = (loginState as LoginState.Error).message
-                showDialog = true // Exibe o dialog de erro
+            is AuthState.Error -> {
+                errorMessage = (authState as AuthState.Error).message
+                showDialog = true
             }
-
             else -> Unit
         }
     }
 
-    // Scaffold permite exibir Snackbar e organizar outros componentes na tela
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        content = { paddingValues ->  // Adicionando o parâmetro paddingValues aqui
-            Column(
-                modifier = Modifier
-                    .padding(32.dp) // Padding adicional, se necessário
-                    .fillMaxSize()
-                    .padding(paddingValues) // Aplicando o paddingValues recebido
-            ) {
-                Text("Login", style = MaterialTheme.typography.headlineMedium)
-                Spacer(modifier = Modifier.height(16.dp))
+        topBar = { TopAppBar(title = { Text(Strings.Labels.APP_NAME) }) }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = Strings.Labels.LOGIN,
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Spacer(modifier = Modifier.height(16.dp))
 
-                // E-mail
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("E-mail") },
-                    singleLine = true,
-                    isError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty(), // Validação simples
-                    modifier = Modifier.fillMaxWidth()
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text(Strings.Labels.EMAIL) },
+                singleLine = true,
+                isError = email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches(),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Text(
+                    text = Strings.Messages.INVALID_EMAIL,
+                    color = MaterialTheme.colorScheme.error
                 )
-
-                // Exibição de erro do campo de e-mail
-                if (email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Text(text = "E-mail inválido", color = MaterialTheme.colorScheme.error)
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Senha
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Senha") },
-                    visualTransformation = PasswordVisualTransformation(),
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = {
-                        // Verifica se o e-mail é válido e a senha tem pelo menos 6 caracteres
-                        if (email.isNotEmpty() && password.length >= 6) {
-                            viewModel.login(email.trim(), password.trim())
-                        } else {
-                            errorMessage = "Por favor, insira um e-mail válido e uma senha com pelo menos 6 caracteres."
-                            showDialog = true // Exibe o dialog de erro
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = loginState !is LoginState.Loading
-                ) {
-                    Text("Entrar")
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                if (loginState is LoginState.Loading) {
-                    CircularProgressIndicator()
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Adicionando o link para a tela de cadastro
-                TextButton(
-                    onClick = { navController.navigate("register") },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Não tem uma conta? Cadastre-se")
-                }
             }
 
-            // AlertDialog para exibir mensagens de erro
-            if (showDialog) {
-                AlertDialog(
-                    onDismissRequest = { showDialog = false },
-                    title = { Text("Erro de Login") },
-                    text = { Text(errorMessage ?: "Erro desconhecido") },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                showDialog = false // Fechar o dialog ao confirmar
-                            }
-                        ) {
-                            Text("OK")
-                        }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text(Strings.Labels.PASSWORD) },
+                visualTransformation = PasswordVisualTransformation(),
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    if (email.isNotBlank() &&
+                        Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
+                        password.length >= 6
+                    ) {
+                        viewModel.login(email.trim(), password.trim())
+                    } else {
+                        errorMessage = Strings.Messages.FILL_ALL_FIELDS
+                        showDialog = true
                     }
-                )
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(Strings.Labels.LOGIN)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextButton(
+                onClick = { navController.navigate(Strings.Routes.REGISTER) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(Strings.Labels.REGISTER)
             }
         }
-    )
+
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text(Strings.Labels.LOGIN) },
+                text = { Text(errorMessage) },
+                confirmButton = {
+                    Button(onClick = { showDialog = false }) { Text("OK") }
+                }
+            )
+        }
+    }
 }

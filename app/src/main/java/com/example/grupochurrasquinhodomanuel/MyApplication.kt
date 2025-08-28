@@ -1,18 +1,20 @@
 package com.example.grupochurrasquinhodomanuel
 
 import android.app.Application
-import com.example.grupochurrasquinhodomanuel.di.appModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.logger.Level
 import org.koin.core.context.startKoin
+import com.example.grupochurrasquinhodomanuel.di.appModule
 
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-
-        // Inicializando o Koin
         startKoin {
+            // Em debug ajuda a ver logs; em release troque para NONE
+            androidLogger(Level.ERROR)
             androidContext(this@MyApplication)
-            modules(appModule) // Carrega o módulo que define as dependências
+            modules(appModule)
         }
     }
 }

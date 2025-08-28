@@ -1,34 +1,29 @@
-package com.example.grupochurrasquinhodomanuel.features.unit.presentation
+package com.example.grupochurrasquinhodomanuel.features.brand.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.grupochurrasquinhodomanuel.data.UnitEntity
-import com.example.grupochurrasquinhodomanuel.data.UnitRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.example.grupochurrasquinhodomanuel.core.model.UnitEntity
+import com.example.grupochurrasquinhodomanuel.data.repository.UnitRepository
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class UnitViewModel(
     private val repository: UnitRepository
 ) : ViewModel() {
 
-    private val _units = MutableStateFlow<List<UnitEntity>>(emptyList())
-    val units: StateFlow<List<UnitEntity>> = _units
-
-    init {
-        loadUnits()
-    }
-
-    private fun loadUnits() {
-        viewModelScope.launch {
-            _units.value = repository.getAllUnits()
-        }
-    }
+    val units: StateFlow<List<UnitEntity>> = repository.getAllUnits()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     fun addUnit(unit: UnitEntity) {
+        // Atualização automática via Flow após inserção
         viewModelScope.launch {
             repository.insert(unit)
-            loadUnits()
         }
     }
 }

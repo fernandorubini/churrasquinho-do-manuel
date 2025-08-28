@@ -1,23 +1,24 @@
-package com.example.grupochurrasquinhodomanuel.core.model
+package com.example.grupochurrasquinhodomanuel.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.grupochurrasquinhodomanuel.features.order.model.OrderStatus
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 data class OrderTracking(
     val id: Int,
-    val status: String,              // Current status of the order
-    val progress: Float,             // Progress percentage (0 to 100)
-    val updates: List<String>        // History of updates with timestamp
+    val status: OrderStatus,
+    val progress: Float,
+    val updates: List<OrderTrackingUpdate>
 ) {
     val validatedProgress: Float
         get() = progress.coerceIn(0f, 100f)
 }
 
 data class OrderTrackingUpdate(
-    val timestamp: String,           // Date and time of the update
-    val description: String          // Description of the update
+    val timestamp: String,
+    val description: String
 ) {
     companion object {
         @RequiresApi(Build.VERSION_CODES.O)
@@ -27,3 +28,4 @@ data class OrderTrackingUpdate(
         }
     }
 }
+

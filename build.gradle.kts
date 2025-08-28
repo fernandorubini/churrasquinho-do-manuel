@@ -5,12 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.google.services) apply false
-    // kapt será aplicado manualmente no módulo :app (evita conflitos)
-}
-
-repositories {
-    google()
-    mavenCentral()
 }
 
 tasks.register("clean", Delete::class) {

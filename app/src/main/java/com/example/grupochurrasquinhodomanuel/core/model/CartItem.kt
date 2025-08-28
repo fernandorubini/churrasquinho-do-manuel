@@ -1,9 +1,11 @@
 package com.example.grupochurrasquinhodomanuel.core.model
 
+import java.math.BigDecimal
+
 data class CartItem(
     val id: Int,
     val name: String,
-    val price: Double,
+    val price: BigDecimal,
     val imageUrl: String,
-    var quantity: Int
+    val quantity: Int
 )

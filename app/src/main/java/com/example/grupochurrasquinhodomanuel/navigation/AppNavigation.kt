@@ -1,53 +1,98 @@
 package com.example.grupochurrasquinhodomanuel.navigation
 
-import MenuScreen
-import RegisterScreen
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.grupochurrasquinhodomanuel.features.brand.presentation.BrandScreen
-import com.example.grupochurrasquinhodomanuel.features.customer.presentation.CustomerHomeScreen
-import com.example.grupochurrasquinhodomanuel.features.login.ui.LoginScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.grupochurrasquinhodomanuel.core.UserType
+import com.example.grupochurrasquinhodomanuel.core.constants.Strings.Routes
+import com.example.grupochurrasquinhodomanuel.core.preferences.AuthPreferences
+import com.example.grupochurrasquinhodomanuel.features.customer.ui.navigation.CustomerNavigationGraph
 import com.example.grupochurrasquinhodomanuel.features.employees.ui.home.EmployeeHomeScreen
+import com.example.grupochurrasquinhodomanuel.features.login.ui.LoginScreen
 import com.example.grupochurrasquinhodomanuel.features.management.ui.ManagementHomeScreen
-import com.example.grupochurrasquinhodomanuel.features.unit.presentation.UnitScreen
-import com.example.grupochurrasquinhodomanuel.features.customer.ui.cart.CartScreen
-import com.example.grupochurrasquinhodomanuel.features.customer.ui.order.OrderConfirmationScreen
+import com.example.grupochurrasquinhodomanuel.features.register.ui.ClientRegisterScreen
+import com.example.grupochurrasquinhodomanuel.features.register.ui.EmployeeRegisterScreen
+import com.example.grupochurrasquinhodomanuel.features.register.ui.UserTypeSelectionScreen
+import com.example.grupochurrasquinhodomanuel.features.order.presentation.navigation.orderTrackingGraph
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AppNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "register")
-    {
-        composable("register") {
-            RegisterScreen(navController)
-        }
-        composable("login") {
-            LoginScreen(navController)
-        }
-        composable("customerHome") {
-            CustomerHomeScreen(navController)
-        }
-        composable("employeeHome") {
-            EmployeeHomeScreen()
-        }
-        composable("managementHome") {
-            ManagementHomeScreen()
-        }
-        composable("brand") {
-            BrandScreen()
-        }
-        composable("unit") {
-            UnitScreen()
-        }
-        composable("cart") {
-            CartScreen(navController)
-        }
-        composable("orderConfirmation") {
-            OrderConfirmationScreen(navController)
-        }
-        composable("menu") {
-            MenuScreen(navController)
+fun AppNavigation(
+    navController: NavHostController,
+    authPreferences: AuthPreferences
+) {
+    var startDestination by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        val email = authPreferences.getUserEmail()
+        val type = authPreferences.getUserType()
+        startDestination = if (email != null && type != null) {
+            when (type) {
+                UserType.CUSTOMER -> Routes.CUSTOMER_HOME
+                UserType.EMPLOYEE -> Routes.EMPLOYEE_HOME
+                UserType.MANAGER  -> Routes.MANAGEMENT_HOME
+            }
+        } else {
+            Routes.LOGIN
         }
     }
+
+    startDestination?.let { start ->
+        NavHost(
+            navController = navController,
+            startDestination = start
+        ) {
+            // Telas comuns
+            composable(Routes.LOGIN) {
+                LoginScreen(navController = navController)
+            }
+            composable(Routes.USER_TYPE_SELECTION) {
+                UserTypeSelectionScreen(navController = navController)
+            }
+            composable(Routes.REGISTER) {
+                ClientRegisterScreen(navController = navController)
+            }
+
+            // Cadastro de funcionário — **passa navController + viewModel**
+            composable(Routes.EMPLOYEE_REGISTER) {
+                EmployeeRegisterScreen(
+                    navController = navController,
+                    viewModel = koinViewModel()
+                )
+            }
+
+            // Cliente (subgrafo)
+            composable(Routes.CUSTOMER_HOME) {
+                CustomerNavigationGraph(navController = navController)
+            }
+
+            // Funcionário
+            composable(Routes.EMPLOYEE_HOME) {
+                EmployeeHomeScreen(navController = navController)
+            }
+
+            // Gestão
+            composable(Routes.MANAGEMENT_HOME) {
+                ManagementHomeScreen(navController = navController)
+            }
+
+            // Rastreio de pedido
+            orderTrackingGraph(navController)
+        }
+    }
+}
+
+/* ------------------------------ Preview ------------------------------ */
+
+@Preview(showBackground = true, name = "AppNavigation → Login")
+@Composable
+private fun Preview_AppNavigation_Login() {
+    val nav = rememberNavController()
+    val context = LocalContext.current
+    val auth = remember { AuthPreferences(context) }
+    AppNavigation(navController = nav, authPreferences = auth)
 }

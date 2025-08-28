@@ -2,11 +2,12 @@ pluginManagement {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal() // Opcional, mas útil para plugins externos
+        gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS) // ✅ Alterado
     repositories {
         google()
         mavenCentral()
