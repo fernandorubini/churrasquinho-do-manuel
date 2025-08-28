@@ -11,7 +11,7 @@ import com.example.grupochurrasquinhodomanuel.core.UserType
 import com.example.grupochurrasquinhodomanuel.core.constants.Strings.Routes
 import com.example.grupochurrasquinhodomanuel.core.preferences.AuthPreferences
 import com.example.grupochurrasquinhodomanuel.features.customer.ui.navigation.CustomerNavigationGraph
-import com.example.grupochurrasquinhodomanuel.features.employees.ui.home.EmployeeHomeScreen
+import com.example.grupochurrasquinhodomanuel.features.management.ui.EmployeeManagementScreen
 import com.example.grupochurrasquinhodomanuel.features.login.ui.LoginScreen
 import com.example.grupochurrasquinhodomanuel.features.management.ui.ManagementHomeScreen
 import com.example.grupochurrasquinhodomanuel.features.register.ui.ClientRegisterScreen
@@ -72,7 +72,7 @@ fun AppNavigation(
 
             // Funcionário
             composable(Routes.EMPLOYEE_HOME) {
-                EmployeeHomeScreen(navController = navController)
+                EmployeeManagementScreen(navController = navController)
             }
 
             // Gestão
@@ -86,7 +86,6 @@ fun AppNavigation(
     }
 }
 
-/* ------------------------------ Preview ------------------------------ */
 
 @Preview(showBackground = true, name = "AppNavigation → Login")
 @Composable

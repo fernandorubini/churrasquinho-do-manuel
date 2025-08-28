@@ -15,9 +15,20 @@ sealed class CustomerBottomNavItem(
     val label: String,
     val icon: @Composable () -> Unit
 ) {
-    object Menu : CustomerBottomNavItem("menu", "Cardápio", { Icon(Icons.Default.Menu, contentDescription = "Cardápio") })
-    object Cart : CustomerBottomNavItem("cart", "Carrinho", { Icon(Icons.Default.ShoppingCart, contentDescription = "Carrinho") })
-    object Favorites : CustomerBottomNavItem("favorites", "Favoritos", { Icon(Icons.Default.Favorite, contentDescription = "Favoritos") })
+    object Menu : CustomerBottomNavItem(
+        "menu",
+        "Cardápio",
+        { Icon(Icons.Default.Menu, contentDescription = "Cardápio") })
+
+    object Cart : CustomerBottomNavItem(
+        "cart",
+        "Carrinho",
+        { Icon(Icons.Default.ShoppingCart, contentDescription = "Carrinho") })
+
+    object Favorites : CustomerBottomNavItem(
+        "favorites",
+        "Favoritos",
+        { Icon(Icons.Default.Favorite, contentDescription = "Favoritos") })
 
     companion object {
         val items = listOf(Menu, Cart, Favorites)

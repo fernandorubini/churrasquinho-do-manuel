@@ -70,7 +70,6 @@ fun ClientRegisterScreen(
             verticalArrangement = Arrangement.Top
         ) {
 
-            // E-mail
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
@@ -91,7 +90,7 @@ fun ClientRegisterScreen(
 
             if (triedToSubmit && !isEmailValid(email)) {
                 Text(
-                    text = S.Messages.INVALID_EMAIL, // ✅ já existia no projeto
+                    text = S.Messages.INVALID_EMAIL,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -99,7 +98,6 @@ fun ClientRegisterScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Senha
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -137,7 +135,6 @@ fun ClientRegisterScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Confirmar senha
             OutlinedTextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
@@ -167,7 +164,6 @@ fun ClientRegisterScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botão registrar
             Button(
                 onClick = {
                     triedToSubmit = true
@@ -175,7 +171,7 @@ fun ClientRegisterScreen(
                         viewModel.register(email, password, confirmPassword) {
                             Toast.makeText(
                                 context,
-                                S.Labels.SUCCESS_REGISTER, // ✅ existe no seu Strings
+                                S.Labels.SUCCESS_REGISTER,
                                 Toast.LENGTH_LONG
                             ).show()
                             navController.navigate(S.Routes.LOGIN) { popUpTo(0) }
@@ -185,7 +181,7 @@ fun ClientRegisterScreen(
                 enabled = true,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(S.Labels.REGISTER) // ✅ texto, não rota
+                Text(S.Labels.REGISTER)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -195,7 +191,7 @@ fun ClientRegisterScreen(
                 onClick = { navController.navigate(S.Routes.LOGIN) },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Já tem uma conta? Entrar") // TODO: mover para Strings.Labels.ALREADY_HAVE_ACCOUNT
+                Text("Já tem uma conta? Entrar")
             }
         }
     }

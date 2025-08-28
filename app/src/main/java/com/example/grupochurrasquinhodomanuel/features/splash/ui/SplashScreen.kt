@@ -1,4 +1,4 @@
-package com.example.grupochurrasquinhodomanuel.features.splash.presentation
+package com.example.grupochurrasquinhodomanuel.features.splash.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,6 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavHostController) {
-    // Navegação simples após um pequeno delay
     LaunchedEffect(Unit) {
         delay(1200)
         navController.navigate(Strings.Routes.USER_TYPE_SELECTION) {
@@ -48,7 +47,6 @@ private fun SplashContent() {
     }
 }
 
-/* ------------------------------ Previews ------------------------------ */
 
 @Preview(showBackground = true, name = "Splash – conteúdo")
 @Composable
@@ -60,6 +58,5 @@ private fun Preview_SplashContent() {
 @Composable
 private fun Preview_Splash_WithNav() {
     val nav = rememberNavController()
-    // Só para ver a UI: não dispara navegação no preview
     SplashContent()
 }

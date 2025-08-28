@@ -9,7 +9,7 @@ class OrderRepositoryImpl(
 ) : OrderRepository {
 
     override fun getAllOrders(): Flow<List<OrderEntity>> =
-        dao.getAll() // ✅ antes estava getAllOrders()
+        dao.getAll()
 
     override fun getOrderById(id: Long): Flow<OrderEntity?> =
         dao.getOrderById(id)

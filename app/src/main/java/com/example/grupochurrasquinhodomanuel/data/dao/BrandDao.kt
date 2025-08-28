@@ -14,7 +14,6 @@ interface BrandDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: BrandEntity)
 
-    // use a coluna 'name' que existe no BrandEntity
     @Query("SELECT * FROM brands ORDER BY name ASC")
     fun getAllBrands(): Flow<List<BrandEntity>>
 
@@ -24,7 +23,4 @@ interface BrandDao {
     @Delete
     suspend fun deleteBrand(entity: BrandEntity)
 
-    // (Opcional) apagar por id:
-    // @Query("DELETE FROM brands WHERE id = :id")
-    // suspend fun deleteById(id: Long)
 }

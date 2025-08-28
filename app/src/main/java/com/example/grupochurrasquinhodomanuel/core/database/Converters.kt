@@ -7,16 +7,10 @@ import java.math.BigDecimal
 import com.example.grupochurrasquinhodomanuel.features.order.model.OrderItem
 import com.example.grupochurrasquinhodomanuel.features.order.model.OrderStatus
 
-/**
- * Converters globais do Room.
- * - Registre no AppDatabase com @TypeConverters(Converters::class)
- * - NÃO chame .addTypeConverter(Converters()) no Room.databaseBuilder.
- */
 class Converters {
 
     private val gson = Gson()
 
-    // --- OrderStatus <-> String ---
     @TypeConverter
     fun stringToOrderStatus(value: String?): OrderStatus? =
         value?.let { OrderStatus.valueOf(it) }
@@ -24,7 +18,6 @@ class Converters {
     @TypeConverter
     fun orderStatusToString(status: OrderStatus?): String? = status?.name
 
-    // --- BigDecimal <-> String (TEXT) ---
     @TypeConverter
     fun stringToBigDecimal(value: String?): BigDecimal? =
         value?.let { BigDecimal(it) }
@@ -33,7 +26,6 @@ class Converters {
     fun bigDecimalToString(value: BigDecimal?): String? =
         value?.toPlainString()
 
-    // --- List<OrderItem> <-> JSON (TEXT) ---
     @TypeConverter
     fun jsonToOrderItemList(json: String?): List<OrderItem> {
         if (json.isNullOrBlank()) return emptyList()

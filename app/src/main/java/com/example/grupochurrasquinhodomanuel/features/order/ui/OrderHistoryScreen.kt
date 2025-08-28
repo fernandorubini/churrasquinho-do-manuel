@@ -33,15 +33,29 @@ fun OrderHistoryScreen(
                     onClick = { onItemClick(p) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(p.name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Column(
+                        Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(
+                            p.name,
+                            style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
                         Text(p.storeName, style = MaterialTheme.typography.labelMedium)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("${Strings.Labels.QUANTITY}: ${p.quantity}", style = MaterialTheme.typography.bodySmall)
-                            Text("${Strings.Labels.TOTAL}: ${p.totalPrice().toCurrency()}", style = MaterialTheme.typography.bodyMedium)
+                            Text(
+                                "${Strings.Labels.QUANTITY}: ${p.quantity}",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                            Text(
+                                "${Strings.Labels.TOTAL}: ${p.totalPrice().toCurrency()}",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
                     }
                 }

@@ -23,7 +23,7 @@ fun WelcomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = Strings.Labels.APP_NAME,              // ✅ era Strings.Titles.APP_NAME
+            text = Strings.Labels.APP_NAME,
             style = MaterialTheme.typography.headlineMedium
         )
 
@@ -36,7 +36,7 @@ fun WelcomeScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = Strings.Labels.LOGIN)            // ✅ era Strings.Buttons.LOGIN
+            Text(text = Strings.Labels.LOGIN)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -48,7 +48,7 @@ fun WelcomeScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = Strings.Labels.REGISTER)         // ✅ era Strings.Buttons.REGISTER
+            Text(text = Strings.Labels.REGISTER)
         }
     }
 }

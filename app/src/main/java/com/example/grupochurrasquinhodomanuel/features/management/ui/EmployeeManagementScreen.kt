@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width // ✅ faltava esse import
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -46,7 +46,6 @@ import com.example.grupochurrasquinhodomanuel.features.management.viewmodel.Mana
 import com.example.grupochurrasquinhodomanuel.model.Employee
 import org.koin.androidx.compose.koinViewModel
 
-// Pode mover para Strings.kt depois, se quiser.
 private const val LABEL_ROLE = "Função"
 private const val LABEL_DEPARTMENT = "Departamento"
 private const val CONFIRM_DELETE_TITLE = "Excluir colaborador?"
@@ -103,7 +102,6 @@ fun EmployeeManagementScreen(
         }
     }
 
-    // Diálogo de edição
     editing?.let { emp ->
         EditEmployeeDialog(
             employee = emp,
@@ -115,7 +113,6 @@ fun EmployeeManagementScreen(
         )
     }
 
-    // Confirmação de exclusão
     confirmingDelete?.let { emp ->
         AlertDialog(
             onDismissRequest = { confirmingDelete = null },

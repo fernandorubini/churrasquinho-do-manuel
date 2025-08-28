@@ -21,7 +21,6 @@ class UnitViewModel(
         )
 
     fun addUnit(unit: UnitEntity) {
-        // Atualização automática via Flow após inserção
         viewModelScope.launch {
             repository.insert(unit)
         }

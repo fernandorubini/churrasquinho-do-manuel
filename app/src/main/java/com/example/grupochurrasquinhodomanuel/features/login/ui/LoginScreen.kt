@@ -42,14 +42,16 @@ fun LoginScreen(
                 val route = when (userType) {
                     UserType.CUSTOMER -> Strings.Routes.CUSTOMER_HOME
                     UserType.EMPLOYEE -> Strings.Routes.EMPLOYEE_HOME
-                    UserType.MANAGER  -> Strings.Routes.MANAGEMENT_HOME
+                    UserType.MANAGER -> Strings.Routes.MANAGEMENT_HOME
                 }
                 navController.navigate(route) { popUpTo(0) }
             }
+
             is AuthState.Error -> {
                 errorMessage = (authState as AuthState.Error).message
                 showDialog = true
             }
+
             else -> Unit
         }
     }

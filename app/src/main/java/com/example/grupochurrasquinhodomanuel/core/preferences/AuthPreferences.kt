@@ -18,28 +18,24 @@ class AuthPreferences(private val context: Context) {
         private val USER_TYPE_KEY: Preferences.Key<String> = stringPreferencesKey("user_type")
     }
 
-    // Salva o e-mail do usuário no DataStore
     suspend fun saveUserEmail(email: String) {
         context.dataStore.edit { prefs ->
             prefs[EMAIL_KEY] = email
         }
     }
 
-    // Recupera o e-mail do usuário do DataStore
     suspend fun getUserEmail(): String? {
         return context.dataStore.data
             .map { prefs -> prefs[EMAIL_KEY] }
             .first()
     }
 
-    // Salva o tipo de usuário no DataStore
     suspend fun saveUserType(userType: UserType) {
         context.dataStore.edit { prefs ->
             prefs[USER_TYPE_KEY] = userType.name
         }
     }
 
-    // Recupera o tipo de usuário do DataStore
     suspend fun getUserType(): UserType? {
         val storedValue: String? = context.dataStore.data
             .map { prefs -> prefs[USER_TYPE_KEY] }
@@ -47,14 +43,13 @@ class AuthPreferences(private val context: Context) {
 
         return storedValue?.let { name ->
             try {
-                UserType.valueOf(name) // Converte a String de volta para o Enum UserType
+                UserType.valueOf(name)
             } catch (e: IllegalArgumentException) {
-                null // Retorna null se o valor não for válido
+                null
             }
         }
     }
 
-    // Limpa todas as preferências do DataStore
     suspend fun clear() {
         context.dataStore.edit { it.clear() }
     }

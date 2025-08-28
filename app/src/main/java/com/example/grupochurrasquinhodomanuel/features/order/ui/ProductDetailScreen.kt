@@ -17,7 +17,15 @@ fun ProductDetailScreen(
     onAddToCart: (Product) -> Unit = {}
 ) {
     Scaffold(
-        topBar = { TopAppBar(title = { Text(product.name, maxLines = 1, overflow = TextOverflow.Ellipsis) }) }
+        topBar = {
+            TopAppBar(title = {
+                Text(
+                    product.name,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            })
+        }
     ) { inner ->
         Column(
             modifier = Modifier

@@ -4,7 +4,7 @@ import com.example.grupochurrasquinhodomanuel.data.local.EmployeeEntity
 import com.example.grupochurrasquinhodomanuel.model.Employee
 
 fun Employee.toEntity(): EmployeeEntity = EmployeeEntity(
-    id = id,
+    id = id,                // Long
     name = name,
     email = email,
     role = role,
@@ -12,7 +12,7 @@ fun Employee.toEntity(): EmployeeEntity = EmployeeEntity(
 )
 
 fun EmployeeEntity.toModel(): Employee = Employee(
-    id = id,
+    id = id,                // Long
     name = name,
     email = email,
     role = role,

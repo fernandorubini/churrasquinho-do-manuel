@@ -6,11 +6,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface OrderDao {
 
-    // Lista todos os pedidos (tempo real)
     @Query("SELECT * FROM orders ORDER BY date DESC")
     fun getAll(): Flow<List<OrderEntity>>
 
-    // Lista pedidos de um cliente (tempo real)
     @Query("SELECT * FROM orders WHERE customerId = :customerId ORDER BY date DESC")
     fun getOrdersForCustomer(customerId: String): Flow<List<OrderEntity>>
 

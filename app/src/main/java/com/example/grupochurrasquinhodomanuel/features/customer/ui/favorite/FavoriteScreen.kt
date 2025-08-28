@@ -62,7 +62,7 @@ private fun FavoriteItem(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .clickable { onClick() } // abre o detalhe do produto
+                .clickable { onClick() }
         ) {
             Text(text = product.name, style = MaterialTheme.typography.titleMedium)
             if (product.storeName.isNotBlank()) {

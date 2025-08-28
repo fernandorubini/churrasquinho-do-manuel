@@ -1,32 +1,25 @@
 package com.example.grupochurrasquinhodomanuel.data.repository
 
-import com.example.grupochurrasquinhodomanuel.features.employees.data.local.EmployeeDao
-import com.example.grupochurrasquinhodomanuel.data.mapper.toEntity
-import com.example.grupochurrasquinhodomanuel.data.mapper.toModel
 import com.example.grupochurrasquinhodomanuel.model.Employee
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
-class EmployeeRepository(private val employeeDao: EmployeeDao) {
+interface EmployeeRepository {
 
-    suspend fun insertEmployee(employee: Employee) {
-        employeeDao.insertEmployee(employee.toEntity())
-    }
+    fun getAllEmployees(): Flow<List<Employee>>
 
-    suspend fun updateEmployee(employee: Employee) {
-        employeeDao.updateEmployee(employee.toEntity())
-    }
+    suspend fun getEmployeeById(id: Long): Employee?
 
-    suspend fun deleteEmployee(employee: Employee) {
-        employeeDao.deleteEmployee(employee.toEntity())
-    }
+    suspend fun insertEmployee(employee: Employee)
 
-    fun getAllEmployees(): Flow<List<Employee>> =
-        employeeDao.getAllEmployees().map { list -> list.map { it.toModel() } }
+    suspend fun updateEmployee(employee: Employee)
 
-    fun getEmployeeByEmail(email: String): Flow<Employee?> =
-        employeeDao.getEmployeeByEmail(email).map { it?.toModel() }
+    suspend fun updateEmployeeById(id: Long, employee: Employee)
 
-    suspend fun getEmployeeById(id: Long): Employee? =
-        employeeDao.getEmployeeById(id)?.toModel()
+    suspend fun toggleActive(id: Long)
+
+    suspend fun deleteEmployee(employee: Employee)
+
+    suspend fun deleteEmployeeById(id: Long)
+
+    suspend fun clear()
 }

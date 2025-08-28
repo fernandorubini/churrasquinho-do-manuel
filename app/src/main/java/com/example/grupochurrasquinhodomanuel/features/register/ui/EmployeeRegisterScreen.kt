@@ -53,7 +53,6 @@ fun EmployeeRegisterScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Nome
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -70,7 +69,6 @@ fun EmployeeRegisterScreen(
                 )
             }
 
-            // E-mail
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
@@ -87,7 +85,6 @@ fun EmployeeRegisterScreen(
                 )
             }
 
-            // Função (a UI coleta, mas não é enviada ao register atual)
             OutlinedTextField(
                 value = role,
                 onValueChange = { role = it },
@@ -104,7 +101,6 @@ fun EmployeeRegisterScreen(
                 )
             }
 
-            // Departamento (a UI coleta, mas não é enviada ao register atual)
             OutlinedTextField(
                 value = department,
                 onValueChange = { department = it },
@@ -121,7 +117,6 @@ fun EmployeeRegisterScreen(
                 )
             }
 
-            // Senha
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -142,7 +137,6 @@ fun EmployeeRegisterScreen(
                 Text(text = label, color = color, style = MaterialTheme.typography.bodySmall)
             }
 
-            // Confirmar senha
             OutlinedTextField(
                 value = confirm,
                 onValueChange = { confirm = it },
@@ -162,7 +156,6 @@ fun EmployeeRegisterScreen(
 
             Spacer(Modifier.height(12.dp))
 
-            // Registrar
             Button(
                 onClick = {
                     tried = true
@@ -176,8 +169,7 @@ fun EmployeeRegisterScreen(
 
                     if (!ok) return@Button
 
-                    // 🔧 Chame o método conforme a assinatura atual do seu ViewModel:
-                    // Se a assinatura é register(name, email, password, confirmPassword, onSuccess):
+
                     viewModel.register(
                         name = name.trim(),
                         email = email.trim(),
@@ -190,8 +182,7 @@ fun EmployeeRegisterScreen(
                             Toast.LENGTH_LONG
                         ).show()
 
-                        // Dica: se quiser persistir role/department, crie outro método no ViewModel,
-                        // ex.: viewModel.updateProfile(role, department)
+
                         navController.navigate(Strings.Routes.LOGIN) { popUpTo(0) }
                     }
                 },
@@ -202,7 +193,6 @@ fun EmployeeRegisterScreen(
 
             Spacer(Modifier.height(8.dp))
 
-            // Link: Já tem uma conta? Entrar
             AlreadyHaveAccountFooter(
                 onClick = { navController.navigate(Strings.Routes.LOGIN) }
             )

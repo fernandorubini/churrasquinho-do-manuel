@@ -15,7 +15,7 @@ class BrandViewModel(
 ) : ViewModel() {
 
     val brands: StateFlow<List<Brand>> = repository.getAllBrands()
-        .map { it.sortedBy { brand -> brand.name } } // Exemplo de melhoria de UX
+        .map { it.sortedBy { brand -> brand.name } }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

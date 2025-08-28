@@ -41,10 +41,21 @@ class EmployeeRegisterViewModel(
         val c = confirmPassword.trim()
 
         when {
-            n.isEmpty() -> { errorMessage = "Nome obrigatório"; return }
-            !isCorporateEmail(em) -> { errorMessage = "E-mail corporativo inválido"; return }
-            p != c -> { errorMessage = "Senhas não coincidem"; return }
-            p.length < 6 -> { errorMessage = "Senha mínima de 6 caracteres"; return }
+            n.isEmpty() -> {
+                errorMessage = "Nome obrigatório"; return
+            }
+
+            !isCorporateEmail(em) -> {
+                errorMessage = "E-mail corporativo inválido"; return
+            }
+
+            p != c -> {
+                errorMessage = "Senhas não coincidem"; return
+            }
+
+            p.length < 6 -> {
+                errorMessage = "Senha mínima de 6 caracteres"; return
+            }
         }
 
         isLoading = true
@@ -55,7 +66,7 @@ class EmployeeRegisterViewModel(
                 .onSuccess {
                     try {
                         val employee = Employee(
-                            id = 0L,               // Room autogerará
+                            id = 0L,
                             name = n,
                             email = em,
                             role = "EMPLOYEE",

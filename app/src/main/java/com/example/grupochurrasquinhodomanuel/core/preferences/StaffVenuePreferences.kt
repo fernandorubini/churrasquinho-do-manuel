@@ -20,7 +20,7 @@ class StaffVenuePreferences(context: Context) {
         )
 
     private val KEY_BRAND = longPreferencesKey("staff_brand_id")
-    private val KEY_UNIT  = longPreferencesKey("staff_unit_id")
+    private val KEY_UNIT = longPreferencesKey("staff_unit_id")
 
     val venueFlow: Flow<StaffVenue?> =
         dataStore.data.map { p ->
@@ -32,7 +32,7 @@ class StaffVenuePreferences(context: Context) {
     suspend fun set(brandId: Long, unitId: Long) {
         dataStore.edit { p ->
             p[KEY_BRAND] = brandId
-            p[KEY_UNIT]  = unitId
+            p[KEY_UNIT] = unitId
         }
     }
 

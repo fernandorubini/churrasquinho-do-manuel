@@ -12,25 +12,19 @@ class OrderTrackingRepository(
     private val dao: OrderDao
 ) {
 
-    /** Observa todos os pedidos (tempo real). */
     fun getAllOrders(): Flow<List<OrderEntity>> = dao.getAll()
 
-    /** Observa um pedido específico (tempo real). */
     fun getOrder(orderId: String): Flow<OrderEntity?> {
         val idLong = orderId.toLongOrNull() ?: return flowOf(null)
         return dao.getOrderById(idLong)
     }
 
-    /** Observa pedidos de um cliente (tempo real). */
     fun getOrdersForCustomer(customerId: String): Flow<List<OrderEntity>> =
         dao.getOrdersForCustomer(customerId)
 
-    /**
-     * Atualiza o status (e campos relevantes) do pedido.
-     * Se existir: update; se não existir: insert.
-     */
+
     suspend fun saveStatus(
-        id: String,                   // <- id String (compatível com OrderEntity)
+        id: String,
         customerId: String,
         status: OrderStatus,
         date: String,
@@ -50,7 +44,7 @@ class OrderTrackingRepository(
             dao.updateOrder(updated)
         } else {
             val newOrder = OrderEntity(
-                id = id,                  // ✅ usa String, evitando o erro de tipo
+                id = id,
                 customerId = customerId,
                 status = status,
                 date = date,

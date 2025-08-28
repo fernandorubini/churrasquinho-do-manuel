@@ -22,7 +22,7 @@ enum class OrderStatus {
             RECEBIDO -> PREPARANDO
             PREPARANDO -> A_CAMINHO
             A_CAMINHO -> ENTREGUE
-            ENTREGUE -> null // último status
+            ENTREGUE -> null
         }
     }
 }

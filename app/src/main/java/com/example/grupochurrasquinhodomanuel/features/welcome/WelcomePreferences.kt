@@ -15,18 +15,15 @@ class WelcomePreferences(private val context: Context) {
         val IS_FIRST_LAUNCH = booleanPreferencesKey("welcome_first_launch")
     }
 
-    // Fluxo que emite true se for a primeira execução do app
     val isFirstLaunch: Flow<Boolean> = context.dataStore.data
         .map { prefs -> prefs[IS_FIRST_LAUNCH] ?: true }
 
-    // Define que o app já foi iniciado ao menos uma vez
     suspend fun setNotFirstLaunch() {
         context.dataStore.edit { prefs ->
             prefs[IS_FIRST_LAUNCH] = false
         }
     }
 
-    // (Opcional) Reseta o estado de primeira execução
     suspend fun resetFirstLaunch() {
         context.dataStore.edit { prefs ->
             prefs.remove(IS_FIRST_LAUNCH)

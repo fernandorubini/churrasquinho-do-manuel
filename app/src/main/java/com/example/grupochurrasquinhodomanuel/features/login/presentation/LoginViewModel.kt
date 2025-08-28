@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
 
-// Use o UserType que o seu projeto espera (pelo erro, é o do pacote core.model)
 import com.example.grupochurrasquinhodomanuel.core.model.UserType as ModelUserType
 
 class LoginViewModel(
@@ -41,7 +40,6 @@ class LoginViewModel(
         }
     }
 
-    // Domínios que classificam como funcionário
     private val EMPLOYEE_DOMAINS = setOf(
         "@churrasquinhodomanuel.com.br",
         "@ossukhikai.com.br",

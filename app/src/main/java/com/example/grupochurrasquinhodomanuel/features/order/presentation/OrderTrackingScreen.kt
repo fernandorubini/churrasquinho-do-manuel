@@ -49,12 +49,10 @@ fun OrderTrackingScreen(
                 text = "Status: Recebido",
                 style = MaterialTheme.typography.bodyLarge
             )
-            // TODO: renderize etapas reais do pedido aqui
         }
     }
 }
 
-/* ------------------------------ Preview ------------------------------ */
 
 @Preview(showBackground = true, name = "OrderTrackingScreen")
 @Composable

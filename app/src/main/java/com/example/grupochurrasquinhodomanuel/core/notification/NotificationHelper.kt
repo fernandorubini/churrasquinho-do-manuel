@@ -30,7 +30,6 @@ object NotificationHelper {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
 
-        // ✅ Verifica permissão antes de exibir a notificação (Android 13+)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             ContextCompat.checkSelfPermission(
                 context,

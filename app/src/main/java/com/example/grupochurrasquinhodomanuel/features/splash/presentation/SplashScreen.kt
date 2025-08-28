@@ -32,11 +32,13 @@ fun SplashScreen(
                     popUpTo("splash") { inclusive = true }
                 }
             }
+
             user != null -> {
                 navController.navigate("storeHome") {
                     popUpTo("splash") { inclusive = true }
                 }
             }
+
             else -> {
                 navController.navigate("login") {
                     popUpTo("splash") { inclusive = true }

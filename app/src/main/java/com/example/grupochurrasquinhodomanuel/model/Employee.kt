@@ -7,9 +7,7 @@ data class Employee(
     val role: String = "",
     val department: String = ""
 ) {
-    /**
-     * Retorna uma cópia com strings aparadas (útil antes de salvar).
-     */
+
     fun normalized(): Employee = copy(
         name = name.trim(),
         email = email.trim(),
@@ -18,7 +16,6 @@ data class Employee(
     )
 
     companion object {
-        /** Instância vazia padrão. */
         val EMPTY: Employee = Employee()
     }
 }

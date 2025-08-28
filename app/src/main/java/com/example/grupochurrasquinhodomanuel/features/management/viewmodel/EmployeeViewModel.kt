@@ -2,52 +2,42 @@ package com.example.grupochurrasquinhodomanuel.features.management.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.grupochurrasquinhodomanuel.data.local.EmployeeEntity
 import com.example.grupochurrasquinhodomanuel.data.repository.EmployeeRepository
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.example.grupochurrasquinhodomanuel.model.Employee
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-
-data class EmployeeUiState(
-    val loading: Boolean = true,
-    val items: List<EmployeeEntity> = emptyList(),
-    val error: String? = null
-)
 
 class EmployeeViewModel(
     private val repository: EmployeeRepository
 ) : ViewModel() {
 
-    private val _ui = MutableStateFlow(EmployeeUiState())
-    val ui: StateFlow<EmployeeUiState> = _ui
+    val employeesState: StateFlow<List<Employee>> =
+        repository.getAllEmployees()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
 
-    init {
-        viewModelScope.launch {
-            repository.employees.collectLatest { list ->
-                _ui.value = _ui.value.copy(loading = false, items = list, error = null)
-            }
-        }
+    fun insert(employee: Employee) = viewModelScope.launch {
+        repository.insertEmployee(employee)
     }
 
-    fun toggleActive(id: String) {
-        viewModelScope.launch {
-            runCatching { repository.toggleActive(id) }
-                .onFailure { e -> _ui.value = _ui.value.copy(error = e.message) }
-        }
+    fun update(id: Long, employee: Employee) = viewModelScope.launch {
+        repository.updateEmployeeById(id, employee)
     }
 
-    fun upsert(employee: EmployeeEntity) {
-        viewModelScope.launch {
-            runCatching { repository.upsert(employee) }
-                .onFailure { e -> _ui.value = _ui.value.copy(error = e.message) }
-        }
+    fun toggleActive(id: Long) = viewModelScope.launch {
+        repository.toggleActive(id)
     }
 
-    fun delete(employee: EmployeeEntity) {
-        viewModelScope.launch {
-            runCatching { repository.delete(employee) }
-                .onFailure { e -> _ui.value = _ui.value.copy(error = e.message) }
-        }
+    fun delete(id: Long) = viewModelScope.launch {
+        repository.deleteEmployeeById(id)
+    }
+
+    fun delete(employee: Employee) = viewModelScope.launch {
+        repository.deleteEmployee(employee)
     }
 }

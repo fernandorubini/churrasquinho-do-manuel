@@ -20,7 +20,6 @@ class ManagementViewModel(
     private val reviewRepository: ReviewRepository
 ) : ViewModel() {
 
-    // ----- Lista de colaboradores (para EmployeeManagementScreen) -----
     val employeesState: StateFlow<List<Employee>> =
         employeeRepository
             .getAllEmployees()
@@ -30,31 +29,26 @@ class ManagementViewModel(
                 initialValue = emptyList()
             )
 
-    // ----- Dashboard (para ManagementHomeScreen) -----
     private val _dashboardState = MutableStateFlow(ManagementDashboardState())
     val dashboardState: StateFlow<ManagementDashboardState> = _dashboardState.asStateFlow()
 
     init {
-        // Exemplo simples: atualiza pedidos ativos / concluídos a partir dos pedidos.
-        // (Os demais campos ficam com placeholders até você conectar suas fontes reais.)
+
         viewModelScope.launch {
             orderRepository.getAllOrders().collect { orders ->
-                // Se seu OrderStatus tiver um "ENTREGUE", ajuste aqui como preferir:
-                val completed = orders.count { it.status.name.equals("ENTREGUE", ignoreCase = true) }
+                val completed =
+                    orders.count { it.status.name.equals("ENTREGUE", ignoreCase = true) }
                 val active = orders.size - completed
 
                 _dashboardState.value = _dashboardState.value.copy(
                     activeOrders = active,
                     completedOrders = completed
-                    // averageDeliveryTime, averageRating, totalSalesToday:
-                    // mantenha por enquanto com os valores padrões (“--”)
-                    // ou preencha aqui quando tiver as métricas reais.
+
                 )
             }
         }
     }
 
-    // ----- Ações de colaboradores (usadas nos dialogs da tela de gestão) -----
     fun addEmployee(employee: Employee) {
         viewModelScope.launch { employeeRepository.insertEmployee(employee) }
     }

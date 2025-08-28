@@ -15,7 +15,6 @@ class FavoriteViewModel(
     private val preferences: FavoritePreferences
 ) : ViewModel() {
 
-    // Catálogo estático de exemplo (tudo vindo do Strings.kt)
     private val allProducts: List<Product> = listOf(
         Product(
             id = 1,

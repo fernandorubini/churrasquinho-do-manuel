@@ -14,7 +14,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.grupochurrasquinhodomanuel.features.customer.ui.navigation.CustomerNavigationGraph
 
-// Definição dos destinos da bottom bar para o cliente
 sealed class CustomerBottomBarScreen(
     val route: String,
     val label: String,
@@ -22,7 +21,8 @@ sealed class CustomerBottomBarScreen(
 ) {
     object Home : CustomerBottomBarScreen("customerHome", "Início", Icons.Default.Home)
     object Favorites : CustomerBottomBarScreen("favorites", "Favoritos", Icons.Default.Favorite)
-    object OrderTracking : CustomerBottomBarScreen("orderTracking", "Pedidos", Icons.Default.LocalShipping)
+    object OrderTracking :
+        CustomerBottomBarScreen("orderTracking", "Pedidos", Icons.Default.LocalShipping)
 }
 
 @Composable

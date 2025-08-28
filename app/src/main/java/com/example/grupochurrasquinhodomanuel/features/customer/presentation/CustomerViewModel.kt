@@ -13,7 +13,6 @@ class CustomerViewModel(
     private val session: SessionPreferences
 ) : ViewModel() {
 
-    // Fluxo de dados para obter o cliente logado
     val customer: StateFlow<Customer?> = session.loggedInEmail
         .flatMapLatest { email ->
             if (email != null) repository.getCustomerByEmail(email) else flowOf(null)
@@ -24,28 +23,24 @@ class CustomerViewModel(
             initialValue = null
         )
 
-    // Função para inserir um cliente no banco de dados
     fun insertCustomer(customer: Customer) {
         viewModelScope.launch {
             repository.insertCustomer(customer)
         }
     }
 
-    // Função para atualizar um cliente no banco de dados
     fun updateCustomer(customer: Customer) {
         viewModelScope.launch {
             repository.updateCustomer(customer)
         }
     }
 
-    // Função para deletar um cliente do banco de dados
     fun deleteCustomer(customer: Customer) {
         viewModelScope.launch {
             repository.deleteCustomer(customer)
         }
     }
 
-    // Função para obter o cliente logado através do email
     fun getCustomerByEmail(email: String): Flow<Customer?> {
         return repository.getCustomerByEmail(email)
     }

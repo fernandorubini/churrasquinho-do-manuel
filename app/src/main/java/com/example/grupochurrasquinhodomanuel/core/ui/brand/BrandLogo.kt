@@ -11,13 +11,13 @@ import com.example.grupochurrasquinhodomanuel.core.model.Brand
 fun BrandLogo(
     brand: Brand,
     modifier: Modifier = Modifier,
-    useSticker: Boolean = false,                 // false = logo de AppBar, true = sticker
+    useSticker: Boolean = false,
     contentScale: ContentScale = ContentScale.Fit
 ) {
     val resId = if (useSticker) {
         BrandAssets.stickerRes(brand)
     } else {
-        BrandAssets.logoResForAppBar(brand)      // <- nome correto
+        BrandAssets.logoResForAppBar(brand)
     }
 
     Image(

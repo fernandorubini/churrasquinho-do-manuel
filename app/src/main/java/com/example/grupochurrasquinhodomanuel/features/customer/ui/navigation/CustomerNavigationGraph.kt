@@ -45,7 +45,6 @@ fun CustomerNavigationGraph(
     }
 }
 
-/* ------------------------------ Previews ------------------------------ */
 
 @Preview(showBackground = true, name = "Customer Graph – Home")
 @Composable

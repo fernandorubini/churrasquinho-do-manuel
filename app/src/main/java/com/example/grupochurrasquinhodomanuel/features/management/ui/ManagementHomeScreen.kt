@@ -25,7 +25,6 @@ fun ManagementHomeScreen(
     navController: NavController,
     viewModel: ManagementViewModel = koinViewModel()
 ) {
-    // ✅ use collectAsStateWithLifecycle e garanta o import de getValue
     val state by viewModel.dashboardState.collectAsStateWithLifecycle()
 
     Column(
@@ -34,15 +33,13 @@ fun ManagementHomeScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // Usei um título existente para evitar Strings.Titles.* inexistente
         Text(
-            text = Strings.Labels.EMPLOYEE_MANAGEMENT_TITLE, // "Gestão de Colaboradores"
+            text = Strings.Labels.EMPLOYEE_MANAGEMENT_TITLE,
             style = MaterialTheme.typography.headlineMedium
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Métricas principais (rótulos textuais diretos por enquanto)
         MetricCard(
             title = "Pedidos ativos",
             value = state.activeOrders.toString()
@@ -60,7 +57,6 @@ fun ManagementHomeScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Resumo adicional
         MetricCard(
             title = "Vendas (hoje)",
             value = state.totalSalesToday
@@ -73,7 +69,6 @@ fun ManagementHomeScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Botão de navegação (usei uma rota existente para compilar)
         Button(onClick = { navController.navigate(Strings.Routes.MANAGEMENT_HOME) }) {
             Text("Ver Detalhes")
         }

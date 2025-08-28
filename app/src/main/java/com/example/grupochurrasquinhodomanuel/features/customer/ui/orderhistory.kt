@@ -1,4 +1,4 @@
-package com.example.grupochurrasquinhodomanuel.features.customer.ui.orderhistory
+package com.example.grupochurrasquinhodomanuel.features.customer.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

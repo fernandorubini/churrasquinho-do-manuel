@@ -9,13 +9,13 @@ import com.example.grupochurrasquinhodomanuel.features.order.model.OrderStatus
 import java.math.BigDecimal
 
 @Entity(tableName = "orders")
-@TypeConverters(Converters::class)  // Usando o conversor
+@TypeConverters(Converters::class)
 data class OrderEntity(
     @PrimaryKey val id: String,
     val customerId: String,
     val status: OrderStatus,
-    val date: String,  // Ex: "2025-06-18"
-    val deliveryTime: Int? = null,  // em minutos
-    val items: List<OrderItem>,  // Lista de OrderItem
+    val date: String,
+    val deliveryTime: Int? = null,
+    val items: List<OrderItem>,
     val total: BigDecimal
 )

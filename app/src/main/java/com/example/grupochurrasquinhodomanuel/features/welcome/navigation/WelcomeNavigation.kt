@@ -8,7 +8,6 @@ import com.example.grupochurrasquinhodomanuel.features.welcome.presentation.Welc
 
 fun NavGraphBuilder.welcomeRoute(navController: NavHostController) {
     composable(route = Strings.Routes.WELCOME) {
-        // Se WelcomeScreen aceita navController:
         WelcomeScreen(navController = navController)
     }
 }

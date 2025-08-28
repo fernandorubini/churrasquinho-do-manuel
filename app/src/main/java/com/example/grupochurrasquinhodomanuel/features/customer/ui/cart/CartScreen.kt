@@ -55,7 +55,8 @@ fun CartScreen(
                             )
                             Text(
                                 text = "Subtotal: ${
-                                    item.price.multiply(item.quantity.toBigDecimal()).toCurrencyString()
+                                    item.price.multiply(item.quantity.toBigDecimal())
+                                        .toCurrencyString()
                                 }",
                                 style = MaterialTheme.typography.bodyLarge
                             )
