@@ -78,35 +78,18 @@ Perfis atendidos:
 
 \## ⭐ Principais Funcionalidades
 
-\*\*Já implementadas\*\*
+**Já implementadas**
+- **Autenticação (Firebase Auth)** — login por e-mail/senha com validação e tratamento de erros.
+- **Navegação condicional por tipo de usuário** (`LoginState` + `UserType`).
+- **Employee Management** — **conectada ao Room** via `EmployeeRepository` + `EmployeeViewModel` (Koin).
+- **Order History / Tracking (cliente e colaboradores)** — **lendo dados reais do Room** (DAO/Repository/ViewModel).
+- **Strings centralizadas** em `core/constants/Strings.kt`.
+- **Valores monetários** com `BigDecimal` + `TypeConverter`.
+- **Onboarding** — **WelcomeScreen** + **DataStore** para sessão/logado (preferências).
 
-\- \*\*Autenticação (Firebase Auth)\*\* — login por e-mail/senha com validação e tratamento de erros.
-
-\- \*\*Navegação condicional por tipo de usuário\*\* (`LoginState` + `UserType`).
-
-\- \*\*Employee Home\*\* — lista pedidos por status, avança status e navega para detalhes.
-
-\- \*\*Management Home\*\* — painel de métricas e tela detalhada (ManagementMetricsDetailScreen).
-
-\- \*\*Order Tracking (cliente)\*\* — tela de rastreio (em transição para dados reais do Room).
-
-\- \*\*Strings centralizadas\*\* em `core/constants/Strings.kt`.
-
-\- \*\*Valores monetários\*\* com `BigDecimal` + `TypeConverter`.
-
-
-
-\*\*Em andamento / próximas\*\*
-
-\- \*\*\[P1]\*\* Conectar \*\*EmployeeManagementScreen\*\* ao \*\*Room\*\* via \*\*EmployeeRepository\*\* e \*\*EmployeeViewModel\*\* (Koin).
-
-\- \*\*\[P2]\*\* `OrderHistory`/`OrderTracking` \*\*lendo dados reais do Room\*\*.
-
-\- \*\*\[P3]\*\* Exibir e cadastrar \*\*Reviews\*\* no `ProductDetailScreen`.
-
-\- \*\*\[P4]\*\* \*\*DataStore\*\* para sessão/logado + \*\*WelcomeScreen\*\* on-first-run.
-
-\- \*\*\[P5]\*\* \*\*BottomNavigation\*\* por tipo de usuário (cliente/colaborador/gestão).
+**Em andamento / próximas**
+- **[P3]** Exibir e cadastrar **Reviews** no `ProductDetailScreen`.
+- **[P5]** **BottomNavigation** por tipo de usuário (cliente/colaborador/gestão).
 
 
 
@@ -153,215 +136,167 @@ Perfis atendidos:
 
 
 ```text
-
 app/
-
 └─ src/main/java/com/example/grupochurrasquinhodomanuel/
-
-&nbsp;  ├─ core/
-
-&nbsp;  │  ├─ constants/
-
-&nbsp;  │  │  └─ Strings.kt
-
-&nbsp;  │  └─ (LoginState.kt, UserType.kt, util/…)
-
-&nbsp;  │
-
-&nbsp;  ├─ data/
-
-&nbsp;  │  ├─ db/
-
-&nbsp;  │  │  ├─ AppDatabase.kt
-
-&nbsp;  │  │  └─ Converters.kt        # inclui BigDecimal
-
-&nbsp;  │  ├─ dao/
-
-&nbsp;  │  │  ├─ BrandDao.kt
-
-&nbsp;  │  │  ├─ CustomerDao.kt
-
-&nbsp;  │  │  ├─ EmployeeDao.kt
-
-&nbsp;  │  │  ├─ OrderDao.kt
-
-&nbsp;  │  │  ├─ ReviewDao.kt
-
-&nbsp;  │  │  └─ UnitDao.kt
-
-&nbsp;  │  ├─ entity/
-
-&nbsp;  │  │  ├─ EmployeeEntity.kt
-
-&nbsp;  │  │  ├─ OrderEntity.kt
-
-&nbsp;  │  │  ├─ ReviewEntity.kt
-
-&nbsp;  │  │  └─ UnitEntity.kt
-
-&nbsp;  │  ├─ repository/
-
-&nbsp;  │  │  ├─ BrandRepository.kt
-
-&nbsp;  │  │  ├─ CustomerRepository.kt
-
-&nbsp;  │  │  ├─ EmployeeRepository.kt
-
-&nbsp;  │  │  ├─ OrderRepository.kt
-
-&nbsp;  │  │  └─ ReviewRepository.kt
-
-&nbsp;  │  └─ mock/
-
-&nbsp;  │     └─ MockUnitList.kt
-
-&nbsp;  │
-
-&nbsp;  ├─ di/
-
-&nbsp;  │  ├─ appModule.kt            # db + converters
-
-&nbsp;  │  ├─ repositoryModule.kt
-
-&nbsp;  │  └─ viewModelModule.kt
-
-&nbsp;  │
-
-&nbsp;  ├─ features/
-
-&nbsp;  │  ├─ brand/
-
-&nbsp;  │  │  ├─ ui/
-
-&nbsp;  │  │  │  ├─ BrandScreen.kt
-
-&nbsp;  │  │  │  └─ UnitScreen.kt
-
-&nbsp;  │  │  └─ viewmodel/
-
-&nbsp;  │  │     ├─ BrandViewModel.kt
-
-&nbsp;  │  │     └─ UnitViewModel.kt
-
-&nbsp;  │  │
-
-&nbsp;  │  ├─ customer/
-
-&nbsp;  │  │  ├─ model/               # modelos específicos de UI do módulo
-
-&nbsp;  │  │  │  └─ Customer.kt
-
-&nbsp;  │  │  ├─ ui/
-
-&nbsp;  │  │  │  ├─ cart/CartScreen.kt
-
-&nbsp;  │  │  │  ├─ menu/MenuScreen.kt
-
-&nbsp;  │  │  │  ├─ order/OrderConfirmationScreen.kt
-
-&nbsp;  │  │  │  └─ store/{HomeScreen.kt, StoreScreen.kt}
-
-&nbsp;  │  │  └─ viewmodel/
-
-&nbsp;  │  │     └─ CustomerViewModel.kt
-
-&nbsp;  │  │
-
-&nbsp;  │  ├─ employees/
-
-&nbsp;  │  │  ├─ ui/
-
-&nbsp;  │  │  │  ├─ home/EmployeeHomeScreen.kt
-
-&nbsp;  │  │  │  └─ detail/EmployeeOrderDetailScreen.kt
-
-&nbsp;  │  │  └─ viewmodel/
-
-&nbsp;  │  │     └─ EmployeeViewModel.kt
-
-&nbsp;  │  │
-
-&nbsp;  │  ├─ login/
-
-&nbsp;  │  │  ├─ ui/LoginScreen.kt
-
-&nbsp;  │  │  └─ viewmodel/LoginViewModel.kt
-
-&nbsp;  │  │
-
-&nbsp;  │  ├─ management/
-
-&nbsp;  │  │  ├─ ui/
-
-&nbsp;  │  │  │  ├─ ManagementHomeScreen.kt
-
-&nbsp;  │  │  │  ├─ ManagementContentScreen.kt
-
-&nbsp;  │  │  │  └─ MetricsSection.kt
-
-&nbsp;  │  │  └─ viewmodel/ManagementViewModel.kt
-
-&nbsp;  │  │
-
-&nbsp;  │  ├─ order/
-
-&nbsp;  │  │  ├─ ui/OrderTrackingScreen.kt
-
-&nbsp;  │  │  └─ viewmodel/OrderTrackingViewModel.kt
-
-&nbsp;  │  │
-
-&nbsp;  │  ├─ review/
-
-&nbsp;  │  │  ├─ ui/ReviewScreen.kt
-
-&nbsp;  │  │  └─ viewmodel/ReviewViewModel.kt
-
-&nbsp;  │  │
-
-&nbsp;  │  └─ register/
-
-&nbsp;  │     └─ ui/
-
-&nbsp;  │        ├─ CustomerRegisterScreen.kt
-
-&nbsp;  │        ├─ EmployeeRegisterScreen.kt
-
-&nbsp;  │        └─ UserTypeSelectionScreen.kt
-
-&nbsp;  │
-
-&nbsp;  ├─ model/
-
-&nbsp;  │  ├─ OrderTracking.kt
-
-&nbsp;  │  └─ OrderTrackingUpdate.kt   # modelos de UI globais (não-Room)
-
-&nbsp;  │
-
-&nbsp;  ├─ navigation/
-
-&nbsp;  │  ├─ AppNavigation.kt
-
-&nbsp;  │  └─ MainNavigation.kt
-
-&nbsp;  │
-
-&nbsp;  └─ ui/theme/
-
-&nbsp;     ├─ Color.kt
-
-&nbsp;     ├─ Theme.kt
-
-&nbsp;     └─ Type.kt
-
-
-
-\# Raiz:
-
+  MainActivity.kt
+  MyApplication.kt
+
+  core/
+    UserType.kt
+    constants/
+      Strings.kt
+    database/
+      AppDatabase.kt
+      Converters.kt
+      DatabaseProvider.kt
+    firebase/
+      FirebaseAuthManager.kt
+    model/
+      Brand.kt
+      CartItem.kt
+      MenuItem.kt
+      UnitEntity.kt
+      UserType.kt
+    notification/
+    preferences/
+      AuthPreferences.kt
+      FavoritePreferences.kt
+      SessionPreferences.kt
+      StaffVenuePreferences.kt
+    session/
+    ui/
+    util/
+
+  data/
+    dao/
+      BrandDao.kt
+      CustomerDao.kt
+      EmployeeDao.kt
+      UnitDao.kt
+    entity/
+      BrandEntity.kt
+      Review.kt
+    local/
+      CustomerEntity.kt
+      EmployeeEntity.kt
+    mapper/
+      BrandMapper.kt
+      CustomerMapper.kt
+      EmployeeMapper.kt
+    mock/
+      mockUnitList.kt
+    repository/
+      BrandRepository.kt
+      CustomerRepository.kt
+      EmployeeRepository.kt
+      EmployeeRepositoryImpl.kt
+      ReviewRepository.kt
+      UnitRepository.kt
+
+  di/
+    appModule.kt
+
+  features/
+    brand/
+      presentation/
+        BrandScreen.kt
+        BrandViewModel.kt
+        UnitScreen.kt
+        UnitViewModel.kt
+    customer/
+      navigation/
+        CustomerNavigationGraph.kt
+      presentation/
+        CustomerActivity.kt
+        CustomerViewModel.kt
+        FavoriteViewModel.kt
+      ui/
+        orderhistory.kt
+    login/
+      model/
+        LoginState.kt
+      navigation/
+        LoginNavigation.kt
+      presentation/
+        LoginViewModel.kt
+      ui/
+        LoginScreen.kt
+      viewmodel/
+        AuthViewModel.kt
+    management/
+      model/
+        ManagementDashboardState.kt
+      ui/
+        EmployeeManagementScreen.kt
+        ManagementContentScreen.kt
+        ManagementHomeScreen.kt
+        ManagementMetricsDetailScreen.kt
+        MetricsSection.kt
+      viewmodel/
+        EmployeeViewModel.kt
+        ManagementViewModel.kt
+    order/
+      data/
+        local/
+          OrderDao.kt
+          OrderEntity.kt
+      model/
+        Order.kt
+      presentation/
+        EmployeeOrderViewModel.kt
+        OrderTrackingScreen.kt
+      ui/
+        OrderHistoryScreen.kt
+        ProductDetailScreen.kt
+    register/
+      navigation/
+        EmployeeRegisterNavigation.kt
+        RegisterNavigation.kt
+        UserTypeSelectionNavigation.kt
+      presentation/
+        RegisterViewModel.kt
+      ui/
+        ClientRegisterScreen.kt
+        EmployeeRegisterScreen.kt
+        EmployeeRegisterViewModel.kt
+        EmployeeTypeSelectionScreen.kt
+        UserTypeSelectionScreen.kt
+    review/
+      data/
+        local/
+          ReviewEntity.kt
+      ui/
+        ReviewScreen.kt
+        ReviewViewModel.kt
+    splash/
+      presentation/
+        SplashScreen.kt
+      ui/
+        SplashScreen.kt
+    welcome/
+      navigation/
+        WelcomeNavigation.kt
+      presentation/
+        WelcomeScreen.kt
+        WelcomeViewModel.kt
+      WelcomePreferences.kt
+
+  model/
+    Customer.kt
+    Employee.kt
+    OrderTracking.kt
+
+  navigation/
+    AppNavHost.kt
+    AppNavigation.kt
+
+  ui/theme/
+    color.kt
+    theme.kt
+    type.kt
+
+# Raiz:
 MainActivity.kt
-
 MyApplication.kt
 
 
@@ -422,7 +357,7 @@ Trecho essencial do .gitignore:
 
 /.gradle/
 
-\*\*/build/
+**/build/
 
 .cxx/
 
@@ -430,13 +365,14 @@ local.properties
 
 /.idea/
 
-\*.iml
+*.iml
 
 /captures/
 
 google-services.json
 
 secrets.properties
+
 
 
 
